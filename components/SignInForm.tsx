@@ -15,17 +15,41 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-interface SignInFormProps {}
+import { useState } from "react";
+import ErrorBox from "./ErrorBox";
+import { useRouter } from "next/navigation";
 
-const SignInForm: React.FC<SignInFormProps> = ({}) => {
+
+interface SignInFormProps {
+  onSignIn: ({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }) => Promise<void>;
+}
+
+const SignInForm: React.FC<SignInFormProps> = ({ onSignIn }) => {
+  const [signInError, setSignInError] = useState<string | null>(null);
+  const router = useRouter();
   const formSchema = z.object({
-    email: z.string().min(1,{message:"Required"}),
-    password: z.string().min(1,{message:"Required"}),
+    email: z
+      .string()
+      .min(1, { message: "Required" })
+      .email("enter correct email"),
+    password: z.string().min(1, { message: "Required" }),
   });
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setSignInError(null);
+    onSignIn({ email: values.email, password: values.password })
+      .then(() => {
+       router.push("/");
+      })
+      .catch((error: Error) => {
+        console.log(error);
+        setSignInError(error.message || "something went wrong try again");
+      });
   }
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -39,42 +63,48 @@ const SignInForm: React.FC<SignInFormProps> = ({}) => {
     <div className="flex flex-col">
       <p className="text-2xl font-bold mx-auto mb-5">Sign In</p>
       <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-gray-600">E-mail</FormLabel>
-              <FormControl>
-                <Input placeholder="email" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel  className="text-gray-600">Password</FormLabel>
-              <FormControl>
-                <Input type="password" placeholder="password" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button className="w-full" type="submit">
-          Sign In
-        </Button>
-      </form>
-    </Form>
-    <div className="flex justify-between text-sm py-5">
-      <p className=" flex items-center">New User?</p>
-      <Link href={"/sign-up"} className={cn(buttonVariants({variant:"link"}),"text-blue-800")}>Sign Up</Link>
-    </div>
+        {signInError && <ErrorBox className="my-2">{signInError}</ErrorBox>}
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-gray-600">E-mail</FormLabel>
+                <FormControl>
+                  <Input placeholder="email" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-gray-600">Password</FormLabel>
+                <FormControl>
+                  <Input type="password" placeholder="password" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button className="w-full" type="submit">
+            Sign In
+          </Button>
+        </form>
+      </Form>
+      <div className="flex justify-between text-sm py-5">
+        <p className=" flex items-center">New User?</p>
+        <Link
+          href={"/sign-up"}
+          className={cn(buttonVariants({ variant: "link" }), "text-blue-800")}
+        >
+          Sign Up
+        </Link>
+      </div>
     </div>
   );
 };

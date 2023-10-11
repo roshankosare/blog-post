@@ -1,16 +1,24 @@
-import Blog from "./Blog";
+import { Blog } from "@prisma/client";
+import BlogCard, { BlogProps } from "./Blog";
 import Card from "./ui/Card";
+import { getBlogs } from "@/lib/posts";
+import Link from "next/link";
 
 interface BlogContainerProps {}
 
-const BlogContainer: React.FC<BlogContainerProps> = ({}) => {
-  const blogs: string[] = ["blog1", "blog2", "blog3", "blog4", "blog 5"];
+const BlogContainer: React.FC<BlogContainerProps> = async ({}) => {
+  const blogs = await getBlogs();
+
   return (
-    <Card className="w-full flex flex-col max-h-full  overflow-y-scroll gap-y-5 no-scrollbar">
+    <div className="w-full flex flex-col max-h-full bg-transparent  overflow-y-scroll gap-y-5 no-scrollbar  px-5">
       {blogs.map((blog) => {
-        return <Blog key={blog}></Blog>;
+        return (
+          <Link href={`blog/${blog.id}`} key={blog.id}>
+            <BlogCard blog={blog}></BlogCard>
+          </Link>
+        );
       })}
-    </Card>
+    </div>
   );
 };
 

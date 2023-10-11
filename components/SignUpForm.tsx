@@ -14,19 +14,44 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
+import ErrorBox from "./ErrorBox";
+import { useRouter } from "next/navigation";
 
-interface SignInFormProps {}
+interface SignInFormProps {
+  onSignUp: ({
+    email,
+    username,
+    password,
+  }: {
+    email: string;
+    username: string;
+    password: string;
+  }) => Promise<void>;
+}
 
-const SignUpForm: React.FC<SignInFormProps> = ({}) => {
+const SignUpForm: React.FC<SignInFormProps> = ({ onSignUp }) => {
+  const [signUpError, setSignUpError] = useState<string | null>(null);
+  const router = useRouter();
+
   const formSchema = z.object({
     email: z.string().min(1, { message: "Required" }),
     password: z.string().min(1, { message: "Required" }),
     username: z.string().min(1, { message: "Required" }),
   });
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+    setSignUpError(null);
+    onSignUp({
+      email: values.email,
+      password: values.password,
+      username: values.username,
+    })
+      .then(() => {
+        router.push("/");
+      })
+      .catch((error: Error) => {
+        setSignUpError(error.message || "something went wrong try again");
+      });
   }
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -40,8 +65,9 @@ const SignUpForm: React.FC<SignInFormProps> = ({}) => {
   return (
     <div className="flex flex-col">
       <p className="text-2xl font-bold mx-auto mb-5">Sign Up</p>
+      {signUpError && <ErrorBox className="my-2">{signUpError}</ErrorBox>}
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
           <FormField
             control={form.control}
             name="email"

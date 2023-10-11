@@ -3,6 +3,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { Provider } from "./provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,8 +20,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn(inter.className, "bg-slate-100 antialiased")}>
-        <Header />
-        <div className="w-full h-full"> {children}</div>
+        <Provider>
+          <Header />
+          <div className="w-full h-full"> {children}</div>
+        </Provider>
       </body>
     </html>
   );

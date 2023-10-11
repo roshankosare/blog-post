@@ -1,7 +1,9 @@
 "use client";
 
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
+import { Button, buttonVariants } from "./ui/button";
 
 type AuthLink = {
   href: string;
@@ -16,21 +18,17 @@ const links: AuthLink[] = [
   },
 
   {
-    href: "/new-blog",
+    href: "/blog/create",
     label: "Write-Blog",
-  },
-
-  {
-    href: "/sign-in",
-    label: "Sign In",
   },
 ];
 
 const Header = ({}) => {
   const router = useRouter();
   const pathname = usePathname();
+  const session = useSession();
   return (
-    <div className="w-full inset-x-0 z-10 mb-5 top-0 px-5 py-5 flex justify-between items-center bg-white shadow-sm">
+    <div className="w-full inset-x-0 z-10 mb-5 top-0 px-5 sticky py-5 flex justify-between items-center bg-white shadow-sm">
       {/* logo */}
       <div className="flex items-center justify-center">
         <p className="text-4xl font-bold px-5">Medium</p>
@@ -42,7 +40,7 @@ const Header = ({}) => {
             pathname === link.href;
           return (
             <Link
-              className={`hover:text-blue-800  ${
+              className={`hover:text-blue-800 my-auto ${
                 active ? "font-bold text-blue-800" : ""
               }`}
               key={link.label}
@@ -52,6 +50,12 @@ const Header = ({}) => {
             </Link>
           );
         })}
+        {session.status === "loading" ? null : session.status ===
+          "authenticated" ? (
+          <Button className={buttonVariants({ size: "sm" })}>Sign out</Button>
+        ) : (
+          <Link href={"/sign-in"} className={buttonVariants({ size: "sm" })}>Sign In</Link>
+        )}
       </div>
     </div>
   );

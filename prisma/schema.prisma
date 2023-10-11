@@ -34,14 +34,16 @@ model UserProfile {
 }
 
 model Blog {
-  id        String      @id @default(uuid())
-  auther    UserProfile @relation(fields: [autherId], references: [id])
-  autherId  String
-  title     String
-  body      String
-  likes     Int         @default(0)
-  dislikes  Int         @default(0)
-  catagory  String[]
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @default(now())
+  id             String      @id @default(uuid())
+  auther         UserProfile @relation(fields: [autherId], references: [id])
+  autherId       String
+  title          String
+  markdownString String      @db.Text
+  markdownHTML   String      @db.Text
+  coverImage     String
+  likes          Int         @default(0)
+  dislikes       Int         @default(0)
+  category       String[]
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @default(now())
 }

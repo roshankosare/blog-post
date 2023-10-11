@@ -1,7 +1,8 @@
 import { compare, hash } from "bcrypt";
 import { prisma } from "../prisma/prisma";
-
-const singUp = async ({
+import * as z from "zod";
+import { NextRequest } from "next/server";
+const signUp = async ({
   email,
   password,
   username,
@@ -10,45 +11,79 @@ const singUp = async ({
   password: string;
   username: string;
 }) => {
-  const user = await prisma.user.findUnique({
-    where: {
-      email,
-    },
-  });
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
 
-  if (user) throw new Error("email is already exists");
-  const hashedPassword = await hash(password, 10);
+    if (user) throw new Error("email is already exists");
+    const hashedPassword = await hash(password, 10);
 
-  const created = await prisma.user.create({
-    data: {
-      email,
-      password: hashedPassword,
-      username,
-    },
-  });
+    const created = await prisma.user.create({
+      data: {
+        email,
+        password: hashedPassword,
+        username,
+      },
+    });
 
-  return created;
+    const newUserProfile = await prisma.userProfile.create({
+      data: {
+        email: created.email,
+        username: created.username,
+        userId: created.id,
+      },
+    });
+
+    return newUserProfile;
+  } catch (error) {
+    if (error instanceof Error) {
+      if (error.message.includes("email")) {
+        throw new Error(error.message);
+      }
+    }
+    throw new Error("internal server Error");
+  }
 };
 
-const singIn = async ({
+const signIn = async ({
   email,
   password,
 }: {
   email: string;
   password: string;
 }) => {
-  const user = await prisma.user.findUnique({
-    where: {
-      email,
-    },
-  });
-  if (!user) throw new Error("email is incorrect");
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+    if (!user) throw new Error("email or password is incorrect");
 
-  if (!compare(password, user.password)) {
-    throw new Error("password is incorrect");
+    if (!compare(password, user.password)) {
+      throw new Error("email or password is incorrect");
+    }
+
+    const userProfile = await prisma.userProfile.findUnique({
+      where: {
+        userId: user.id,
+      },
+    });
+    if(!userProfile){
+      throw new Error("userProfile not found")
+    }
+
+    return userProfile;
+  } catch (error) {
+    if (error instanceof Error) {
+      if (error.message.includes("email")) throw new Error(error.message);
+    }
+    throw new Error("Internal server Error");
   }
-
-  return user;
 };
 
-export { singIn, singUp };
+
+export { signIn, signUp };
