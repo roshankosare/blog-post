@@ -1,7 +1,6 @@
 import { compare, hash } from "bcrypt";
 import { prisma } from "../prisma/prisma";
-import * as z from "zod";
-import { NextRequest } from "next/server";
+
 const signUp = async ({
   email,
   password,

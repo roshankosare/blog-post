@@ -1,9 +1,10 @@
 // pages/api/images.js
 import fs from "fs";
 import { writeFile } from "fs/promises";
+import { NextApiRequest } from "next";
 
 import { NextRequest, NextResponse } from "next/server";
-import { join } from "path";
+import path, { join } from "path";
 
 export async function POST(req: NextRequest) {
   try {
@@ -40,3 +41,6 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+// pages/api/images/[imageId].j
+

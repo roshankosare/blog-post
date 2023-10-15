@@ -1,6 +1,6 @@
 import { signUp } from "@/lib/auth/auth";
-import { sign } from "jsonwebtoken";
-import { NextRequest, NextResponse } from "next/server";
+
+import {  NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   const userbody = await req.json();
