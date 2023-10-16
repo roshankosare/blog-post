@@ -71,8 +71,8 @@ const signIn = async ({
         userId: user.id,
       },
     });
-    if(!userProfile){
-      throw new Error("userProfile not found")
+    if (!userProfile) {
+      throw new Error("userProfile not found");
     }
 
     return userProfile;
@@ -83,6 +83,5 @@ const signIn = async ({
     throw new Error("Internal server Error");
   }
 };
-
 
 export { signIn, signUp };

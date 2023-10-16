@@ -1,3 +1,4 @@
+import Avatar from "@/components/Avatar";
 import Card from "@/components/ui/Card";
 import getDateTimeFormat from "@/lib/getDateTimeFormat";
 import { getBlog } from "@/lib/posts";
@@ -41,7 +42,7 @@ const BlogInfo: React.FC<{ params: { id: string } }> = async ({ params }) => {
   return (
     <Card className="sm:max-w-3xl w-full h-auto flex flex-col mx-auto  py-5 px-10 gap-y-5">
       <div className="flex gap-x-5 py-2 mb-5">
-        <Image src={"/avatar.jpg"} width={25} height={25} alt="DP" />
+       <Avatar width={50} hight={50}/>
         <p className="text-lg text-gray-900 my-auto ">{blog.auther.username}</p>
       </div>
       <div className=" w-full text-4xl font-bold">{blog.title}</div>
@@ -52,8 +53,8 @@ const BlogInfo: React.FC<{ params: { id: string } }> = async ({ params }) => {
         src={blog.coverImage}
         alt="cover image"
         className="w-full h-auto"
-        width={100}
-        height={100}
+        width={600}
+        height={400}
       ></Image>
 
       <div

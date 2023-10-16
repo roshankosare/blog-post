@@ -59,7 +59,6 @@ export async function POST(req: NextRequest) {
           markdownString: markdown,
           markdownHTML: parsedMarkdown,
           coverImage: uplodedImage.data?.url || "/default-blog-cover.jpg",
-         
         },
       });
       if (blog) {
