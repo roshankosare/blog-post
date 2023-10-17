@@ -34,13 +34,16 @@ const BlogCard: React.FC<BlogProps> = ({ blog }) => {
 
         <div className="flex gap-x-8 text-gray-500 text-sm">
           <div className="flex items-end">
-            <SlLike size={20} />:{blog.likes}
+            <SlLike size={18} />
+            <div className=" mx-2 align-text-bottom">{blog.likes}</div>
           </div>
           <div className="flex items-end">
-            <SlDislike size={20} />:{blog.likes}
+            <SlDislike size={18} />{" "}
+            <div className=" mx-2 align-text-bottom">{blog.dislikes}</div>
           </div>
           <div className="flex items-end">
-            <GoCommentDiscussion size={20} />:{blog.likes}
+            <GoCommentDiscussion size={18} />{" "}
+            <div className=" mx-2 align-text-bottom">{blog.likes}</div>
           </div>
         </div>
       </div>
