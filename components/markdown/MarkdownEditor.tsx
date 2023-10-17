@@ -6,10 +6,12 @@ import MarkdownNavBar from "./MarkdownNavBar";
 import MarkdownPreview from "./MarkdownPreview";
 
 interface MarkdownProps {
+  setFiles:(file:File)=>void,
   markdownValue: string;
   setMarkdownValue: (value: string) => void;
 }
 const MarkdownEditor: React.FC<MarkdownProps> = ({
+  setFiles,
   markdownValue,
   setMarkdownValue,
 }) => {
@@ -39,6 +41,7 @@ const MarkdownEditor: React.FC<MarkdownProps> = ({
   return (
     <Card className="w-full min-h-screen  flex flex-col px-2 py-2 rounded-sm">
       <MarkdownNavBar
+      setFiles={setFiles}
         setMarkDownText={(value: string) => setMarkdownTextSnippits(value)}
         setPreview={() => setPreview((pre) => !pre)}
         preview={preview}

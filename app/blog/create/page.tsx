@@ -24,6 +24,7 @@ const NewBlog: React.FC<NewBlogProps> = ({}) => {
   const [success, setSuccess] = useState<boolean>(false);
   const [coverImage, setCoverImage] = useState<File | null>(null);
   const imageInputRef = useRef<HTMLInputElement | null>(null);
+  const [blogImages,setBlogImages] = useState<File[]>([]);
 
   const onSubmit = async () => {
     setError(null);
@@ -94,6 +95,7 @@ const NewBlog: React.FC<NewBlogProps> = ({}) => {
       ) : null}
 
       <MarkdownEditor
+      setFiles={(file:File)=>setBlogImages(pre=>[...pre,file])}
         markdownValue={markdownBody}
         setMarkdownValue={(value: string) => setMarkdownBody(value)}
       />

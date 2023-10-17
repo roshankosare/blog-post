@@ -18,6 +18,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { useRef } from "react";
 
 const md = {
   h1: "# Enter main heading here",
@@ -32,16 +33,23 @@ const md = {
     "![image-title](https://fleek-team-bucket.storage.fleek.co/thumbnails-blog/Next.png)",
 };
 type MarkdownNavBarProps = {
+  setFiles: (file: File) => void;
   setMarkDownText: (value: string) => void;
   setPreview: () => void;
   preview: boolean;
 };
 
 const MarkdownNavBar: React.FC<MarkdownNavBarProps> = ({
+  setFiles,
   setMarkDownText,
   setPreview,
   preview,
 }) => {
+  const handleUploadImage = () => {
+    fileInputRef.current?.click();
+  };
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   return (
     <div className="w-full h-12 flex  px-5 py-2 border border-gray-200 rounded-sm justify-between">
       <div className="flex gap-x-5">
@@ -97,12 +105,7 @@ const MarkdownNavBar: React.FC<MarkdownNavBarProps> = ({
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button
-              variant={"outline"}
-              size={"icon_sm"}
-              onClick={() => setMarkDownText(md.image)}
-              disabled={preview}
-            >
+            <Button variant={"outline"} size={"icon_sm"} disabled={preview}>
               <BiImageAdd />
             </Button>
           </DropdownMenuTrigger>
@@ -110,8 +113,12 @@ const MarkdownNavBar: React.FC<MarkdownNavBarProps> = ({
             <DropdownMenuLabel>Add Image</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>Link</DropdownMenuItem>
-              <DropdownMenuItem>Upload</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setMarkDownText(md.image)}>
+                Link
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleUploadImage()}>
+                Upload
+              </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -119,6 +126,20 @@ const MarkdownNavBar: React.FC<MarkdownNavBarProps> = ({
       <div>
         <Toggle enable={preview} label="Preview" onClick={() => setPreview()} />
       </div>
+
+      <input
+        type="file"
+        ref={fileInputRef}
+        style={{ display: "none" }}
+        onChange={(e) => {
+          const image = e.target.files?.[0];
+          if (image) {
+            setFiles(image);
+            const imageLocalUrl = URL.createObjectURL(image);
+            setMarkDownText(`![${image.name}](${imageLocalUrl})`);
+          }
+        }}
+      />
     </div>
   );
 };
