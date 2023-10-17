@@ -53,11 +53,13 @@ type createBlogBody = {
   title: string;
   markdown: string;
   coverImage: File | null;
+  blogImages:File[]
 };
 export const postBlog = async ({
   title,
   markdown,
   coverImage,
+  blogImages
 }: createBlogBody): Promise<Blog | undefined> => {
   if (!markdown || markdown === "" || !title || title === "") {
     throw new Error("title or body missing");
@@ -67,6 +69,8 @@ export const postBlog = async ({
     form.set("title", title);
     form.set("markdown", markdown);
     if (coverImage) form.set("coverImage", coverImage);
+    if(blogImages.length > 0)
+    blogImages.map((image)=>form.append("blogImages",image));
     const response = await axios.post("/api/blog", form);
     return response.data;
   } catch (error) {

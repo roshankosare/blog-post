@@ -32,6 +32,8 @@ export async function POST(req: Request) {
     const title = body.get("title") as unknown as string;
     const markdown = body.get("markdown") as unknown as string;
     const coverImage = body.get("coverImage") as unknown as File;
+    const blogImages = body.getAll("blogImages") as unknown as File[];
+
     let coverImageUrl;
 
     if (!title || !markdown)
@@ -40,8 +42,11 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     if (coverImage) {
-      
       coverImageUrl = (await utapi.uploadFiles(coverImage)).data?.url;
+    }
+
+    if(blogImages){
+      // TOTO:- UPLOAD EACH BLOG IMAGE TO UPLOADTHING AND REPLACE LOCAL BLOG IMAGE URL WITH UPLOADTHING URL
     }
 
     const processedMarkdown = await remark().use(html).process(markdown);
