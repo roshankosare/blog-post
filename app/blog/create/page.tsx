@@ -10,10 +10,14 @@ import { postBlog } from "@/lib/posts";
 import Link from "next/link";
 import { useRef, useState } from "react";
 import Image from "next/image";
+import { redirect } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 interface NewBlogProps {}
 
 const NewBlog: React.FC<NewBlogProps> = ({}) => {
+  const session = useSession();
+
   const [title, setTitle] = useState<string>("");
   const [markdownBody, setMarkdownBody] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
@@ -36,6 +40,10 @@ const NewBlog: React.FC<NewBlogProps> = ({}) => {
       setError("can not create blog");
     }
   };
+
+  if (!session.data?.user) {
+    return redirect("/sign-in");
+  }
 
   return (
     <div className="w-full sm:max-w-5xl h-auto mx-auto  bg-white  flex flex-col gap-y-5 px-10 py-5">

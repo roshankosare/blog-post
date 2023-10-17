@@ -37,7 +37,7 @@ const BlogInfo: React.FC<{ params: { id: string } }> = async ({ params }) => {
   const blog = await getBlog(blogId);
 
   if (!blog) {
-    return <div >Page not found</div>;
+    return <div>Page not found</div>;
   }
   return (
     <Card className="sm:max-w-3xl w-full h-auto flex flex-col mx-auto  py-5 px-10 gap-y-5">

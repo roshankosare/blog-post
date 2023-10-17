@@ -40,33 +40,29 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     if (coverImage) {
-      // const dataBuffer = await coverImage.arrayBuffer();
-      // const buffer = Buffer.from(dataBuffer);
-      // const filename = `${uuid()}.${coverImage.name.split(".")[1]}`;
+      
       coverImageUrl = (await utapi.uploadFiles(coverImage)).data?.url;
     }
-     
 
-      const processedMarkdown = await remark().use(html).process(markdown);
-      const parsedMarkdown = processedMarkdown.toString();
+    const processedMarkdown = await remark().use(html).process(markdown);
+    const parsedMarkdown = processedMarkdown.toString();
 
-      const blog = await prisma.blog.create({
-        data: {
-          autherId: session.user.id,
-          title: title,
-          markdownString: markdown,
-          markdownHTML: parsedMarkdown,
-          coverImage: coverImageUrl || "/default-blog-cover.jpg",
-        },
-      });
-      if (blog) {
-        return NextResponse.json(blog, { status: 201 });
-      }
-      return NextResponse.json(
-        { error: "internal server error" },
-        { status: 500 }
-      );
-    
+    const blog = await prisma.blog.create({
+      data: {
+        autherId: session.user.id,
+        title: title,
+        markdownString: markdown,
+        markdownHTML: parsedMarkdown,
+        coverImage: coverImageUrl || "/default-blog-cover.jpg",
+      },
+    });
+    if (blog) {
+      return NextResponse.json(blog, { status: 201 });
+    }
+    return NextResponse.json(
+      { error: "internal server error" },
+      { status: 500 }
+    );
   } catch (error) {
     console.log(error);
     return NextResponse.json(

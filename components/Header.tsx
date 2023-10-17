@@ -36,7 +36,9 @@ const Header = ({}) => {
     <div className="w-full inset-x-0 z-10 mb-5 top-0 px-5 sticky py-5 flex justify-between items-center bg-white shadow-sm">
       {/* logo */}
       <div className="flex items-center justify-center">
-        <p className="text-4xl font-bold px-5">Medium</p>
+        <Link href="/" className="text-4xl font-bold px-5">
+          Medium
+        </Link>
       </div>
       <div className="flex flex-row gap-x-10 px-5">
         {links.map((link) => {
