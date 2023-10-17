@@ -9,6 +9,15 @@ import {
 import { BiImageAdd } from "react-icons/bi";
 import { Button } from "../ui/button";
 import Toggle from "../ui/toggle";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 
 const md = {
   h1: "# Enter main heading here",
@@ -85,14 +94,27 @@ const MarkdownNavBar: React.FC<MarkdownNavBarProps> = ({
         >
           <FaLink />
         </Button>
-        <Button
-          variant={"outline"}
-          size={"icon_sm"}
-          onClick={() => setMarkDownText(md.image)}
-          disabled={preview}
-        >
-          <BiImageAdd />
-        </Button>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant={"outline"}
+              size={"icon_sm"}
+              onClick={() => setMarkDownText(md.image)}
+              disabled={preview}
+            >
+              <BiImageAdd />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56">
+            <DropdownMenuLabel>Add Image</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuItem>Link</DropdownMenuItem>
+              <DropdownMenuItem>Upload</DropdownMenuItem>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
       <div>
         <Toggle enable={preview} label="Preview" onClick={() => setPreview()} />
