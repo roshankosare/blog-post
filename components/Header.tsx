@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { Button, buttonVariants } from "./ui/button";
+import { signOut } from "next-auth/react";
 
 type AuthLink = {
   href: string;
@@ -24,6 +25,10 @@ const links: AuthLink[] = [
 ];
 
 const Header = ({}) => {
+  const singOutHadler = async () => {
+    await signOut();
+    router.push("/");
+  };
   const router = useRouter();
   const pathname = usePathname();
   const session = useSession();
@@ -52,9 +57,16 @@ const Header = ({}) => {
         })}
         {session.status === "loading" ? null : session.status ===
           "authenticated" ? (
-          <Button className={buttonVariants({ size: "sm" })}>Sign out</Button>
+          <Button
+            className={buttonVariants({ size: "sm" })}
+            onClick={() => singOutHadler()}
+          >
+            Sign out
+          </Button>
         ) : (
-          <Link href={"/sign-in"} className={buttonVariants({ size: "sm" })}>Sign In</Link>
+          <Link href={"/sign-in"} className={buttonVariants({ size: "sm" })}>
+            Sign In
+          </Link>
         )}
       </div>
     </div>
