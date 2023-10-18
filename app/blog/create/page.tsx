@@ -33,7 +33,12 @@ const NewBlog: React.FC<NewBlogProps> = ({}) => {
       return;
     }
     try {
-      await postBlog({ title, markdown: markdownBody, coverImage: coverImage ,blogImages:blogImages});
+      await postBlog({
+        title,
+        markdown: markdownBody,
+        coverImage: coverImage,
+        blogImages: blogImages,
+      });
       setSuccess(true);
       setTitle("");
       setMarkdownBody("");

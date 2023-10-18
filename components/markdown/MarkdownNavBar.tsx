@@ -8,6 +8,7 @@ import {
 } from "react-icons/fa";
 import { BiImageAdd } from "react-icons/bi";
 import { Button } from "../ui/button";
+import { nanoid } from "nanoid";
 import Toggle from "../ui/toggle";
 import {
   DropdownMenu,
@@ -133,10 +134,14 @@ const MarkdownNavBar: React.FC<MarkdownNavBarProps> = ({
         style={{ display: "none" }}
         onChange={(e) => {
           const image = e.target.files?.[0];
+
           if (image) {
-            setFiles(image);
-            const imageLocalUrl = URL.createObjectURL(image);
-            setMarkDownText(`![${image.name}](${imageLocalUrl})`);
+            const imageType = image?.name.split(".")[1];
+            const imageId = nanoid();
+            const imageWithId = new File([image], `${imageId}.${imageType}`);
+            setFiles(imageWithId);
+            const imageLocalUrl = URL.createObjectURL(imageWithId);
+            setMarkDownText(`![${imageWithId.name}](${imageLocalUrl})`);
           }
         }}
       />

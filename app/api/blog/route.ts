@@ -35,6 +35,8 @@ export async function POST(req: Request) {
     const blogImages = body.getAll("blogImages") as unknown as File[];
 
     let coverImageUrl;
+    let blogImagesUrl: string[] = [];
+    let markdownWithImageLinks: string = markdown;
 
     if (!title || !markdown)
       return NextResponse.json(
@@ -45,18 +47,33 @@ export async function POST(req: Request) {
       coverImageUrl = (await utapi.uploadFiles(coverImage)).data?.url;
     }
 
-    if(blogImages){
+    if (blogImages.length > 0) {
       // TOTO:- UPLOAD EACH BLOG IMAGE TO UPLOADTHING AND REPLACE LOCAL BLOG IMAGE URL WITH UPLOADTHING URL
+      for (let i = 0; i < blogImages.length; i++) {
+        const data = await utapi.uploadFiles(blogImages[i]);
+    
+        const regexPattern = new RegExp(
+          `\\!\\[${blogImages[i].name}\\]\\(blob:http://localhost:3000/([^\)]+)\\)`
+        );
+
+        markdownWithImageLinks = markdown.replace(
+          regexPattern,
+          `![${blogImages[i].name}](${data.data?.url})`
+        );
+       
+      }
     }
 
-    const processedMarkdown = await remark().use(html).process(markdown);
+    const processedMarkdown = await remark()
+      .use(html)
+      .process(markdownWithImageLinks);
     const parsedMarkdown = processedMarkdown.toString();
 
     const blog = await prisma.blog.create({
       data: {
         autherId: session.user.id,
         title: title,
-        markdownString: markdown,
+        markdownString: markdownWithImageLinks,
         markdownHTML: parsedMarkdown,
         coverImage: coverImageUrl || "/default-blog-cover.jpg",
       },
