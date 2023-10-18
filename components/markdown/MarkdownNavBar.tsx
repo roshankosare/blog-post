@@ -20,6 +20,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { useRef } from "react";
+import TooltipMarkdownTool from "./TooltipMarkdownTool";
 
 const md = {
   h1: "# Enter main heading here",
@@ -54,75 +55,91 @@ const MarkdownNavBar: React.FC<MarkdownNavBarProps> = ({
   return (
     <div className="w-full h-12 flex  px-5 py-2 border border-gray-200 rounded-sm justify-between">
       <div className="flex gap-x-5">
-        <Button
-          variant={"outline"}
-          size={"icon_sm"}
-          onClick={() => setMarkDownText(md.h1)}
-          disabled={preview}
-        >
-          <FaHeading />
-        </Button>
-        <Button
-          variant={"outline"}
-          size={"icon_sm"}
-          onClick={() => setMarkDownText(md.bold)}
-          disabled={preview}
-        >
-          <FaBold />
-        </Button>
-        <Button
-          variant={"outline"}
-          size={"icon_sm"}
-          onClick={() => setMarkDownText(md.italic)}
-          disabled={preview}
-        >
-          <FaItalic />
-        </Button>
+        <TooltipMarkdownTool tipText="Add Heading">
+          <Button
+            variant={"outline"}
+            size={"icon_sm"}
+            onClick={() => setMarkDownText(md.h1)}
+            disabled={preview}
+          >
+            <FaHeading />
+          </Button>
+        </TooltipMarkdownTool>
+        <TooltipMarkdownTool tipText="Bold Text">
+          <Button
+            variant={"outline"}
+            size={"icon_sm"}
+            onClick={() => setMarkDownText(md.bold)}
+            disabled={preview}
+          >
+            <FaBold />
+          </Button>
+        </TooltipMarkdownTool>
 
-        <Button
-          variant={"outline"}
-          size={"icon_sm"}
-          onClick={() => setMarkDownText(md.ol)}
-          disabled={preview}
-        >
-          <FaListOl />
-        </Button>
-        <Button
-          variant={"outline"}
-          size={"icon_sm"}
-          onClick={() => setMarkDownText(md.ul)}
-          disabled={preview}
-        >
-          <FaListUl />
-        </Button>
-        <Button
-          variant={"outline"}
-          size={"icon_sm"}
-          onClick={() => setMarkDownText(md.link)}
-          disabled={preview}
-        >
-          <FaLink />
-        </Button>
+        <TooltipMarkdownTool tipText="Italic Text">
+          <Button
+            variant={"outline"}
+            size={"icon_sm"}
+            onClick={() => setMarkDownText(md.italic)}
+            disabled={preview}
+          >
+            <FaItalic />
+          </Button>
+        </TooltipMarkdownTool>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant={"outline"} size={"icon_sm"} disabled={preview}>
-              <BiImageAdd />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56">
-            <DropdownMenuLabel>Add Image</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem onClick={() => setMarkDownText(md.image)}>
-                Link
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleUploadImage()}>
-                Upload
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <TooltipMarkdownTool tipText="Unorderd List">
+          <Button
+            variant={"outline"}
+            size={"icon_sm"}
+            onClick={() => setMarkDownText(md.ol)}
+            disabled={preview}
+          >
+            <FaListOl />
+          </Button>
+        </TooltipMarkdownTool>
+
+        <TooltipMarkdownTool tipText="Orderd List">
+          <Button
+            variant={"outline"}
+            size={"icon_sm"}
+            onClick={() => setMarkDownText(md.ul)}
+            disabled={preview}
+          >
+            <FaListUl />
+          </Button>
+        </TooltipMarkdownTool>
+
+        <TooltipMarkdownTool tipText="Add Link">
+          <Button
+            variant={"outline"}
+            size={"icon_sm"}
+            onClick={() => setMarkDownText(md.link)}
+            disabled={preview}
+          >
+            <FaLink />
+          </Button>
+        </TooltipMarkdownTool>
+       
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant={"outline"} size={"icon_sm"} disabled={preview}>
+                <BiImageAdd />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56">
+              <DropdownMenuLabel>Add Image</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem onClick={() => setMarkDownText(md.image)}>
+                  Link
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleUploadImage()}>
+                  Upload
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+      
       </div>
       <div>
         <Toggle enable={preview} label="Preview" onClick={() => setPreview()} />
