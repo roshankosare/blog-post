@@ -119,27 +119,26 @@ const MarkdownNavBar: React.FC<MarkdownNavBarProps> = ({
             <FaLink />
           </Button>
         </TooltipMarkdownTool>
-       
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant={"outline"} size={"icon_sm"} disabled={preview}>
-                <BiImageAdd />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56">
-              <DropdownMenuLabel>Add Image</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuGroup>
-                <DropdownMenuItem onClick={() => setMarkDownText(md.image)}>
-                  Link
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleUploadImage()}>
-                  Upload
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
-      
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant={"outline"} size={"icon_sm"} disabled={preview}>
+              <BiImageAdd />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56">
+            <DropdownMenuLabel>Add Image</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuItem onClick={() => setMarkDownText(md.image)}>
+                Link
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleUploadImage()}>
+                Upload
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
       <div>
         <Toggle enable={preview} label="Preview" onClick={() => setPreview()} />

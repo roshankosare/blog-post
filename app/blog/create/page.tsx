@@ -12,6 +12,7 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
+import Loader from "@/components/Loader";
 
 interface NewBlogProps {}
 
@@ -25,6 +26,7 @@ const NewBlog: React.FC<NewBlogProps> = ({}) => {
   const [coverImage, setCoverImage] = useState<File | null>(null);
   const imageInputRef = useRef<HTMLInputElement | null>(null);
   const [blogImages, setBlogImages] = useState<File[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const onSubmit = async () => {
     setError(null);
@@ -107,13 +109,16 @@ const NewBlog: React.FC<NewBlogProps> = ({}) => {
       <Button
         onClick={(e) => {
           e.preventDefault();
+          setLoading(true);
           onSubmit();
+          setLoading(false);
         }}
+        disabled={loading}
         variant={"default"}
         size={"default"}
-        className="w-20"
+        className="w-auto"
       >
-        Create
+        {loading ? <Loader message="Plase wait" /> : "Create"}
       </Button>
       <input
         type="file"
