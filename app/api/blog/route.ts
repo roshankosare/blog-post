@@ -30,15 +30,11 @@ export async function POST(req: Request) {
 
     const body = await req.formData();
     const title = body.get("title") as unknown as string;
-    const markdown = body.get("markdown") as unknown as string;
     const coverImage = body.get("coverImage") as unknown as File;
-    const blogImages = body.getAll("blogImages") as unknown as File[];
 
     let coverImageUrl;
-    let blogImagesUrl: string[] = [];
-    let markdownWithImageLinks: string = markdown;
 
-    if (!title || !markdown)
+    if (!title)
       return NextResponse.json(
         { error: "title or body missing" },
         { status: 400 }
@@ -47,32 +43,17 @@ export async function POST(req: Request) {
       coverImageUrl = (await utapi.uploadFiles(coverImage)).data?.url;
     }
 
-    if (blogImages.length > 0) {
-      for (let i = 0; i < blogImages.length; i++) {
-        const data = await utapi.uploadFiles(blogImages[i]);
-
-        const regexPattern = new RegExp(
-          `\\!\\[${blogImages[i].name}\\]\\(blob:http://localhost:3000/([^\)]+)\\)`
-        );
-
-        markdownWithImageLinks = markdownWithImageLinks.replace(
-          regexPattern,
-          `![${blogImages[i].name}](${data.data?.url})`
-        );
-      }
-    }
-
-    const processedMarkdown = await remark()
-      .use(html)
-      .process(markdownWithImageLinks);
-    const parsedMarkdown = processedMarkdown.toString();
+    // const processedMarkdown = await remark()
+    //   .use(html)
+    //   .process(markdownWithImageLinks);
+    // const parsedMarkdown = processedMarkdown.toString();
 
     const blog = await prisma.blog.create({
       data: {
         autherId: session.user.id,
         title: title,
-        markdownString: markdownWithImageLinks,
-        markdownHTML: parsedMarkdown,
+        markdownString: "",
+        markdownHTML: "",
         coverImage: coverImageUrl || "/default-blog-cover.jpg",
       },
     });

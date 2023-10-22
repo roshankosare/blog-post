@@ -2,8 +2,7 @@
 
 import SignInForm from "@/components/SignInForm";
 
-import { signIn, useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 interface pageProps {}
 
@@ -24,11 +23,7 @@ const onSignIn = async ({
     throw new Error(response.error);
   }
 };
-const SignInPage= ({}) => {
-  const session = useSession();
-  if(session.status === "authenticated"){
-    redirect("/");
-  }
+const SignInPage = ({}) => {
   return <SignInForm onSignIn={onSignIn} />;
 };
 

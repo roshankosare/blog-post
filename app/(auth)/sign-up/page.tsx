@@ -49,10 +49,7 @@ const onSignUp = async ({
   }
 };
 const SignUpPage: React.FC<pageProps> = ({}) => {
-  const session = useSession();
-  if (session.status === "authenticated") {
-    redirect("/");
-  }
+
   return <SignUpForm onSignUp={onSignUp} />;
 };
 

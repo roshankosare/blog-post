@@ -35,14 +35,14 @@ const md = {
     "![image-title](https://fleek-team-bucket.storage.fleek.co/thumbnails-blog/Next.png)",
 };
 type MarkdownNavBarProps = {
-  setFiles: (file: File) => void;
+  setBlogImage: (file: File) => void;
   setMarkDownText: (value: string) => void;
   setPreview: () => void;
   preview: boolean;
 };
 
 const MarkdownNavBar: React.FC<MarkdownNavBarProps> = ({
-  setFiles,
+  setBlogImage,
   setMarkDownText,
   setPreview,
   preview,
@@ -155,7 +155,7 @@ const MarkdownNavBar: React.FC<MarkdownNavBarProps> = ({
             const imageType = image?.name.split(".")[1];
             const imageId = nanoid();
             const imageWithId = new File([image], `${imageId}.${imageType}`);
-            setFiles(imageWithId);
+           setBlogImage(imageWithId);
             const imageLocalUrl = URL.createObjectURL(imageWithId);
             setMarkDownText(`![${imageWithId.name}](${imageLocalUrl})`);
           }

@@ -1,71 +1,52 @@
 "use client";
 
 import ErrorBox from "@/components/ErrorBox";
-import MarkdownEditor from "@/components/markdown/MarkdownEditor";
 
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { postBlog } from "@/lib/posts";
-import Link from "next/link";
-import { useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Loader from "@/components/Loader";
+import { redirect, useRouter } from "next/navigation";
 
 interface NewBlogProps {}
 
 const NewBlog: React.FC<NewBlogProps> = ({}) => {
-  const session = useSession();
-
   const [title, setTitle] = useState<string>("");
-  const [markdownBody, setMarkdownBody] = useState<string>("");
+
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<boolean>(false);
+
   const [coverImage, setCoverImage] = useState<File | null>(null);
   const imageInputRef = useRef<HTMLInputElement | null>(null);
-  const [blogImages, setBlogImages] = useState<File[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const router = useRouter();
 
   const onSubmit = async () => {
     setError(null);
-    if (title === "" || markdownBody === "") {
+    if (title === "") {
       setError(" plese fill the all required fields");
       return;
     }
     try {
-      await postBlog({
+      const res = await postBlog({
         title,
-        markdown: markdownBody,
         coverImage: coverImage,
-        blogImages: blogImages,
       });
-      setSuccess(true);
-      setTitle("");
-      setMarkdownBody("");
+      const blogId = res?.id;
+      router.push(`/blog/write/${blogId}`);
     } catch (error) {
       setError("can not create blog");
     }
   };
 
-  if (!session.data?.user) {
-    return redirect("/sign-in");
-  }
-
   return (
     <div className="w-full sm:max-w-5xl h-auto mx-auto  bg-white  flex flex-col gap-y-5 px-10 py-5">
       <h1 className="w-full text-center text-3xl font-bold">Create new Blog</h1>
       {error && <ErrorBox>{error}</ErrorBox>}
-      {success && (
-        <div className="w-full text-lg font-bold text-center text-gray-600">
-          Your Blog has been published succefully.{" "}
-          <Link className="text-blue-500" href="/">
-            Click here{" "}
-          </Link>
-          for Home page
-        </div>
-      )}
 
       <div className="w-full felx flex-col gap-y-2">
         <Label>Title</Label>
@@ -101,24 +82,20 @@ const NewBlog: React.FC<NewBlogProps> = ({}) => {
         </div>
       ) : null}
 
-      <MarkdownEditor
-        setFiles={(file: File) => setBlogImages((pre) => [...pre, file])}
-        markdownValue={markdownBody}
-        setMarkdownValue={(value: string) => setMarkdownBody(value)}
-      />
       <Button
-        onClick={(e) => {
+        onClick={async (e) => {
           e.preventDefault();
           setLoading(true);
-          onSubmit();
+
+          await onSubmit();
           setLoading(false);
         }}
         disabled={loading}
         variant={"default"}
         size={"default"}
-        className="w-auto"
+        className="sm:w-40 w-full"
       >
-        {loading ? <Loader message="Plase wait" /> : "Create"}
+        {loading ? <Loader message="Plase wait" /> : "Next"}
       </Button>
       <input
         type="file"

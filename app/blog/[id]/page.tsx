@@ -4,7 +4,9 @@ import getDateTimeFormat from "@/lib/getDateTimeFormat";
 import { getBlog } from "@/lib/posts";
 import { Blog } from "@prisma/client";
 import { Metadata, ResolvingMetadata } from "next";
+import { getSession } from "next-auth/react";
 import Image from "next/image";
+import { notFound } from "next/navigation";
 
 export async function generateMetadata(
   { params }: { params: { id: string } },
@@ -37,7 +39,7 @@ const BlogInfo: React.FC<{ params: { id: string } }> = async ({ params }) => {
   const blog = await getBlog(blogId);
 
   if (!blog) {
-    return <div>Page not found</div>;
+    return notFound();
   }
   return (
     <Card className="sm:max-w-3xl w-full h-auto flex flex-col mx-auto  py-5 px-10 gap-y-5">
