@@ -19,8 +19,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import TooltipMarkdownTool from "./TooltipMarkdownTool";
+import { utapi } from "@/lib/uploadthing";
+import axios from "axios";
+import { UploadImagePreview } from "../UploadImagePreview";
 
 const md = {
   h1: "# Enter main heading here",
@@ -35,23 +38,31 @@ const md = {
     "![image-title](https://fleek-team-bucket.storage.fleek.co/thumbnails-blog/Next.png)",
 };
 type MarkdownNavBarProps = {
-  setBlogImage: (file: File) => void;
   setMarkDownText: (value: string) => void;
   setPreview: () => void;
+  setBlogImage: (iamge: File) => void;
+  showImageUpload: () => void;
+  uploadBlogImage: () => Promise<string>;
   preview: boolean;
 };
 
 const MarkdownNavBar: React.FC<MarkdownNavBarProps> = ({
-  setBlogImage,
   setMarkDownText,
   setPreview,
   preview,
+  showImageUpload,
+  setBlogImage,
+  uploadBlogImage,
 }) => {
-  const handleUploadImage = () => {
+  const handleUploadImageButton = () => {
     fileInputRef.current?.click();
   };
 
+
+
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [showModel,setShowModel] = useState<boolean>(false);
+
   return (
     <div className="w-full h-12 flex  px-5 py-2 border border-gray-200 rounded-sm justify-between">
       <div className="flex gap-x-5">
@@ -133,34 +144,44 @@ const MarkdownNavBar: React.FC<MarkdownNavBarProps> = ({
               <DropdownMenuItem onClick={() => setMarkDownText(md.image)}>
                 Link
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleUploadImage()}>
+              <DropdownMenuItem onClick={() => handleUploadImageButton()}>
                 Upload
               </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div>
+      <div className=" flex gap-x-5">
         <Toggle enable={preview} label="Preview" onClick={() => setPreview()} />
+        <Button
+          onClick={() => showImageUpload()}
+          size={"sm"}
+          variant={"outline"}
+          className="my-auto"
+        >
+          Images
+        </Button>
       </div>
 
       <input
         type="file"
         ref={fileInputRef}
         style={{ display: "none" }}
-        onChange={(e) => {
+        onChange={async (e) => {
           const image = e.target.files?.[0];
 
           if (image) {
             const imageType = image?.name.split(".")[1];
             const imageId = nanoid();
             const imageWithId = new File([image], `${imageId}.${imageType}`);
-           setBlogImage(imageWithId);
-            const imageLocalUrl = URL.createObjectURL(imageWithId);
-            setMarkDownText(`![${imageWithId.name}](${imageLocalUrl})`);
+            setBlogImage(imageWithId);
+            setShowModel(true);
+            // const url = await uploadBlogImage();
+            // setMarkDownText(`![${imageWithId.name}?.name}](${url})`);
           }
         }}
       />
+    
     </div>
   );
 };

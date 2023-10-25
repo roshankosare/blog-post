@@ -4,13 +4,14 @@ import MarkdownEditor from "@/components/markdown/MarkdownEditor";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { updateBlog } from "@/lib/posts";
-import { Blog } from "@prisma/client";
 import axios from "axios";
 import { notFound } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import Loader from "@/components/Loader";
+import { UploadImagePreview } from "@/components/UploadImagePreview";
+import { Blog } from "@prisma/client";
 
 const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
   const [blogImage, setBlogImage] = useState<File | null>(null);
@@ -21,25 +22,53 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
   const { toast } = useToast();
   const [saveDisabled, setSaveDisabled] = useState<boolean>(false);
   const [publishDisabled, setPublishedDisabled] = useState<boolean>(false);
+  const [showModel, setShowModel] = useState<boolean>(false);
+  const [triggerBlogUpadate, setTriggerBlogUpadate] = useState<boolean>(false);
+  const uploadBlogImage = async () => {
+    try {
+      const form = new FormData();
+      if (!blogImage) {
+        console.log("blog Image is empty");
+        return;
+      }
+      form.append("image", blogImage);
+      const resposne = await axios.post(`/api/blog/${params.id}/image`, form);
+      setShowModel(false);
+      setTriggerBlogUpadate((pre) => !pre);
+      return resposne.data.url;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    setShowModel(true);
+  }, [blogImage]);
 
   const saveBlog = async () => {
-    setSaveDisabled(true);
-    await updateBlog({ markdownString: markdown }, params.id);
-    toast({
-      title: "Saved",
-      description: "Your Blog has been updated successfully",
-      // action: <ToastAction altText="Goto schedule to undo">Undo</ToastAction>,
-    });
-    setSaveDisabled(false);
+    try {
+      setSaveDisabled(true);
+      await updateBlog({ markdownString: markdown }, params.id);
+      toast({
+        title: "Saved",
+        description: "Your Blog has been updated successfully",
+        // action: <ToastAction altText="Goto schedule to undo">Undo</ToastAction>,
+      });
+      setTriggerBlogUpadate((pre) => !pre);
+      setSaveDisabled(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const publishBlog = async () => {
     setPublishedDisabled(true);
-    await updateBlog({ published:true }, params.id);
+    await updateBlog({ published: true }, params.id);
     toast({
       title: "Published",
       description: "Your Blog has been published successfully",
     });
+    setTriggerBlogUpadate((pre) => !pre);
     setPublishedDisabled(false);
   };
   useEffect(() => {
@@ -50,8 +79,12 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
       })
       .catch((error) => setError(true));
     setLoading(false);
-  }, [params]);
+  }, [params, triggerBlogUpadate]);
 
+  useEffect(()=>{
+    if(blog)
+    setMarkdown(blog.markdownString)
+  },[blog])
   if (error) {
     notFound();
   }
@@ -74,11 +107,15 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
           <Skeleton className="w-full h-14"></Skeleton>
         )}
       </div>
-      <MarkdownEditor
-        setBlogImage={(file: File) => setBlogImage(file)}
-        setMarkdownValue={(value: string) => setMarkdown(value)}
-        markdownValue=""
-      />
+      {blog && (
+        <MarkdownEditor
+          images={blog.images.map((image: any) => image.url)}
+          setBlogImage={(image: File) => setBlogImage(image)}
+          uploadBlogImage={uploadBlogImage}
+          setMarkdownValue={(value: string) => setMarkdown(value)}
+          markdownValue={markdown}
+        />
+      )}
       <div className="flex gap-x-5">
         <Button
           disabled={saveDisabled}
@@ -87,11 +124,27 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
         >
           {saveDisabled ? <Loader message="Please wait"></Loader> : "Save"}
         </Button>
-        <Button disabled = {publishDisabled} onClick={() => publishBlog()} className="w-40">
+        <Button
+          disabled={publishDisabled}
+          onClick={() => publishBlog()}
+          className="w-40"
+        >
           {/* TODO:- if publish change publish to unpublish */}
-          {publishDisabled ? <Loader message="Please wait"></Loader> : "Publish"}
+          {publishDisabled ? (
+            <Loader message="Please wait"></Loader>
+          ) : (
+            "Publish"
+          )}
         </Button>
       </div>
+      {blogImage && (
+        <UploadImagePreview
+          onImageUpload={uploadBlogImage}
+          onClose={() => setShowModel(false)}
+          open={showModel}
+          url={URL.createObjectURL(blogImage)}
+        ></UploadImagePreview>
+      )}
     </div>
   );
 };

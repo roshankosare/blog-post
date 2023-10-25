@@ -36,17 +36,25 @@ model UserProfile {
 }
 
 model Blog {
-  id             String      @id @default(uuid())
-  auther         UserProfile @relation(fields: [autherId], references: [id])
+  id             String       @id @default(uuid())
+  auther         UserProfile  @relation(fields: [autherId], references: [id], onDelete: Cascade)
   autherId       String
   title          String
-  markdownString String      @db.Text
-  markdownHTML   String      @db.Text
+  markdownString String       @db.Text
+  markdownHTML   String       @db.Text
   coverImage     String
-  likes          Int         @default(0)
-  dislikes       Int         @default(0)
+  likes          Int          @default(0)
+  dislikes       Int          @default(0)
   category       String[]
-  createdAt      DateTime    @default(now())
-  updatedAt      DateTime    @default(now())
-  published      Boolean     @default(false)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now())
+  published      Boolean      @default(false)
+  images         BlogImages[]
+}
+
+model BlogImages {
+  id     String @id @default(uuid())
+  url    String
+  blog   Blog   @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  blogId String
 }

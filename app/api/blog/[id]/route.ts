@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma/prisma";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { authOptionts } from "../../auth/[...nextauth]/route";
+import { remark } from "remark";
+import html from "remark-html";
 
 export async function GET(
   req: Request,
@@ -11,6 +13,13 @@ export async function GET(
   const blog = await prisma.blog.findUnique({
     where: {
       id: id,
+    },
+    include: {
+      images: {
+        select:{
+          url:true
+        }
+      }
     },
   });
 
@@ -34,6 +43,13 @@ export async function PATCH(
       return NextResponse.json({ error: "forbidden " }, { status: 401 });
     const blogId = params.id;
     const body = await req.json();
+    const markdown = body.markdownString;
+    if (markdown) {
+      body.markdownHTML = (
+        await remark().use(html).process(markdown)
+      ).toString();
+    }
+
     const blog = await prisma.blog.update({
       where: {
         id: blogId,
@@ -77,7 +93,6 @@ export async function DELETE(
       id: blogId,
     },
   });
-
 
   return NextResponse.json({ message: "blog deleted", blog }, { status: 200 });
 }
