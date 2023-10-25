@@ -16,7 +16,7 @@ import { Blog } from "@prisma/client";
 const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
   const [blogImage, setBlogImage] = useState<File | null>(null);
   const [markdown, setMarkdown] = useState<string>("");
-  const [blog, setBlog] = useState<Blog | null>();
+  const [blog, setBlog] = useState<Blog &{images:string[]} | null>();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
   const { toast } = useToast();
@@ -81,10 +81,9 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
     setLoading(false);
   }, [params, triggerBlogUpadate]);
 
-  useEffect(()=>{
-    if(blog)
-    setMarkdown(blog.markdownString)
-  },[blog])
+  useEffect(() => {
+    if (blog) setMarkdown(blog.markdownString);
+  }, [blog]);
   if (error) {
     notFound();
   }
