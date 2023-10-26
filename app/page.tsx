@@ -1,11 +1,5 @@
 import BlogContainer from "@/components/BlogContainer";
-import FeaturedPosts from "@/components/FeaturedPosts";
-import NewSuggetions from "@/components/NewSuggestions";
-import Suggested from "@/components/Suggested";
 
-import { getServerSession } from "next-auth";
-import Image from "next/image";
-import { authOptionts } from "./api/auth/[...nextauth]/route";
 
 export default async function Home() {
   return (
