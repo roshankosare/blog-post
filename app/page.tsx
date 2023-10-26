@@ -14,10 +14,6 @@ export default async function Home() {
         <div className="w-2/3">
           <BlogContainer />
         </div>
-        <div className="flex flex-col w-1/3 gap-y-10">
-          <NewSuggetions />
-          <Suggested />
-        </div>
       </div>
     </main>
   );
