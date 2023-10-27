@@ -11,14 +11,16 @@ export interface BlogProps {
 const BlogCard: React.FC<BlogProps> = ({ blog }) => {
   return (
     <Card className="w-full min-h-[180px] flex h-[180px] border border-gray-200">
-      <Image
-        width={400}
-        height={350}
-        src={blog.coverImage || ""}
-        alt="some image"
-        className="w-5/12"
-      />
-      <div className="flex flex-col h-full w-full gap-y-5 px-5 py-2">
+      <div className="w-5/12 px-1 py-1">
+        <Image
+          width={400}
+          height={350}
+          src={blog.coverImage || ""}
+          alt="some image"
+          className="w-full h-full max-h-full"
+        />
+      </div>
+      <div className="flex flex-col h-full  gap-y-5 px-2 py-2">
         <div className="w-full flex flex-row gap-x-3 ">
           <Avatar width={40} hight={40} />
           <p className="text-gray-600 text-md my-auto">
