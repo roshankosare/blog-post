@@ -14,7 +14,9 @@ const UploadedImages: React.FC<UploadedImagesProps> = ({ images }) => {
     if (copyLinkRef) {
       try {
         const imageId = copyLinkRef.current?.value.split("/").pop();
-        await navigator.clipboard.writeText(`![${imageId || nanoid()}](${copyLinkRef.current?.value})` || "");
+        await navigator.clipboard.writeText(
+          `![${imageId || nanoid()}](${copyLinkRef.current?.value})` || ""
+        );
       } catch (error) {
         console.log(error);
       }

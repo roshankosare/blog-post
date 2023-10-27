@@ -16,7 +16,7 @@ import { Blog } from "@prisma/client";
 const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
   const [blogImage, setBlogImage] = useState<File | null>(null);
   const [markdown, setMarkdown] = useState<string>("");
-  const [blog, setBlog] = useState<Blog &{images:string[]} | null>();
+  const [blog, setBlog] = useState<(Blog & { images: string[] }) | null>();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
   const { toast } = useToast();

@@ -3,8 +3,7 @@ import { prisma } from "@/lib/prisma/prisma";
 import { getServerSession } from "next-auth";
 import { authOptionts } from "../auth/[...nextauth]/route";
 import { NextRequest, NextResponse } from "next/server";
-import { remark } from "remark";
-import html from "remark-html";
+
 
 import { utapi } from "@/lib/uploadthing";
 

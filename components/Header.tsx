@@ -33,14 +33,14 @@ const Header = ({}) => {
   const pathname = usePathname();
   const session = useSession();
   return (
-    <div className="w-full inset-x-0 z-10 mb-5 top-0 px-5 sticky py-5 flex justify-between items-center bg-white shadow-sm">
+    <div className="w-full inset-x-0 z-10 mb-5 top-0 px-2 py-3 sm:px-5 sticky sm:py-5 flex justify-between items-center bg-white shadow-sm">
       {/* logo */}
       <div className="flex items-center justify-center">
-        <Link href="/" className="text-4xl font-bold px-5">
+        <Link href="/" className=" text-3xl sm:text-4xl font-bold px-5">
           Medium
         </Link>
       </div>
-      <div className="flex flex-row gap-x-10 px-5">
+      <div className="sm:flex flex-row gap-x-10 px-5 hidden ">
         {links.map((link) => {
           const active =
             (pathname.includes(link.href) && link.href.length > 1) ||

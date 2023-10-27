@@ -16,10 +16,10 @@ export async function GET(
     },
     include: {
       images: {
-        select:{
-          url:true
-        }
-      }
+        select: {
+          url: true,
+        },
+      },
     },
   });
 

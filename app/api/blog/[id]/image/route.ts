@@ -40,7 +40,6 @@ export async function POST(
     });
 
     return NextResponse.json({ url: url }, { status: 200 });
-
   } catch (error) {
     return NextResponse.json(
       { error: "internal server error" },

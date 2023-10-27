@@ -9,22 +9,21 @@ import {
   DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+
 import { FC } from "react";
 import Image from "next/image";
 interface UploadImagePreviewProps {
   url: string;
   open: boolean;
   onClose: () => void;
-  onImageUpload :()=>void
+  onImageUpload: () => void;
 }
 
 export const UploadImagePreview: FC<UploadImagePreviewProps> = ({
   url,
   open,
   onClose,
-  onImageUpload
+  onImageUpload,
 }) => {
   return (
     <Dialog open={open}>
@@ -43,9 +42,11 @@ export const UploadImagePreview: FC<UploadImagePreviewProps> = ({
           ></Image>
         </div>
         <DialogFooter className="gap-x-5">
-          <Button onClick={()=>onImageUpload()}>Uplaod</Button>
+          <Button onClick={() => onImageUpload()}>Uplaod</Button>
           <DialogClose asChild>
-            <Button variant={"outline"} onClick={()=>onClose()}>Close</Button>
+            <Button variant={"outline"} onClick={() => onClose()}>
+              Close
+            </Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>
