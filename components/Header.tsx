@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { Button, buttonVariants } from "./ui/button";
 import { signOut } from "next-auth/react";
+import { cn } from "@/lib/utils";
 
 type AuthLink = {
   href: string;
@@ -40,35 +41,21 @@ const Header = ({}) => {
           Medium
         </Link>
       </div>
-      <div className="sm:flex flex-row gap-x-10 px-5 hidden ">
-        {links.map((link) => {
-          const active =
-            (pathname.includes(link.href) && link.href.length > 1) ||
-            pathname === link.href;
-          return (
-            <Link
-              className={`hover:text-blue-800 my-auto ${
-                active ? "font-bold text-blue-800" : ""
-              }`}
-              key={link.label}
-              href={link.href}
-            >
-              {link.label}
-            </Link>
-          );
-        })}
+      <div className="sm:flex flex-row gap-x-10 px-2">
         {session.status === "loading" ? null : session.status ===
           "authenticated" ? (
-          <Button
-            className={buttonVariants({ size: "sm" })}
-            onClick={() => singOutHadler()}
-          >
-            Sign out
-          </Button>
+          <div className="hidden sm:flex gap-x-8">
+            <div className="flex gap-x-8 items-center">
+              <Link className = {""}href={"/blog/create"}>Write</Link>
+              <Link className = {""}href={"/"}>My blogs</Link>
+              <Link className = {""}href={"/"}>Profile</Link>
+            </div>
+            <Button  size={"sm"} onClick={()=>{signOut()}}>Sign Out</Button>
+          </div>
         ) : (
-          <Link href={"/sign-in"} className={buttonVariants({ size: "sm" })}>
-            Sign In
-          </Link>
+          <div>
+            <Link  className = {cn(buttonVariants({variant:"default",size:"sm"}),"rounded-full px-5")}href={"/sign-in"}>Get Started</Link>
+          </div>
         )}
       </div>
     </div>
