@@ -10,7 +10,7 @@ const Card: React.FC<CardProps> = ({ children, className, ...props }) => {
     <div
       {...props}
       className={cn(
-        "broder border-gray-500 shadow-sm rounded-sm bg-white p-2",
+        "border border-gray-300  rounded-md bg-white p-2",
         className
       )}
     >
