@@ -8,6 +8,7 @@ interface BlogContainerProps {}
 
 const BlogContainer: React.FC<BlogContainerProps> = async ({}) => {
   const blogs = await getBlogs();
+  console.log(blogs)
 
   return (
     <div className="w-full flex flex-col max-h-full bg-transparent  overflow-y-scroll gap-y-5 no-scrollbar  px-5">

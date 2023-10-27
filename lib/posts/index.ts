@@ -23,6 +23,7 @@ export const getBlogs = async (): Promise<Partial<Blog>[]> => {
     });
     return blogs;
   } catch (error) {
+    console.log(error);
     return [];
   }
 };
