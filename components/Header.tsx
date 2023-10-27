@@ -13,17 +13,7 @@ type AuthLink = {
   // icon:ReactNode;
 };
 
-const links: AuthLink[] = [
-  {
-    href: "/",
-    label: "Home",
-  },
 
-  {
-    href: "/blog/create",
-    label: "Write-Blog",
-  },
-];
 
 const Header = ({}) => {
   const singOutHadler = async () => {
@@ -50,7 +40,7 @@ const Header = ({}) => {
               <Link className = {""}href={"/"}>My blogs</Link>
               <Link className = {""}href={"/"}>Profile</Link>
             </div>
-            <Button  size={"sm"} onClick={()=>{signOut()}}>Sign Out</Button>
+            <Button  size={"sm"} onClick={()=>{singOutHadler()}}>Sign Out</Button>
           </div>
         ) : (
           <div>

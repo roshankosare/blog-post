@@ -28,9 +28,9 @@ const BlogCard: React.FC<BlogProps> = ({ blog }) => {
         <div className="flex gap-x-5">
          
           <p className="text-sx text-gray-600">{"9 min read"}</p>
-          <p className="text-sm text-gray-600">
+       
             {<Badge variant={"outline"}>Technology</Badge>}
-          </p>
+        
         </div>
       </div>
       <div className=" w-[170px] sm:w-[250px] h-full sm:py-2 py-2">
