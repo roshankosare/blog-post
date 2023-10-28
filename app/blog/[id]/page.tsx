@@ -42,7 +42,7 @@ const BlogInfo: React.FC<{ params: { id: string } }> = async ({ params }) => {
     return notFound();
   }
   return (
-    <Card className="sm:max-w-3xl w-full h-auto flex flex-col mx-auto  py-5 px-10 gap-y-5">
+    <Card className="sm:max-w-3xl w-full h-auto flex flex-col mx-auto border-0 py-5 px-10 gap-y-5">
       <div className="flex gap-x-5 py-2 mb-5">
         <Avatar width={50} hight={50} />
         <p className="text-lg text-gray-900 my-auto ">{blog.auther.username}</p>
@@ -60,7 +60,7 @@ const BlogInfo: React.FC<{ params: { id: string } }> = async ({ params }) => {
       ></Image>
 
       <div
-        className="prose w-full h-auto "
+        className=" prose w-full h-auto "
         dangerouslySetInnerHTML={{ __html: blog.markdownHTML || "" }}
       ></div>
     </Card>

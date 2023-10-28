@@ -22,15 +22,13 @@ const BlogCard: React.FC<BlogProps> = ({ blog }) => {
             {getDateTimeFormat(blog.createdAt?.toString() || "")}
           </p>
         </div>
-        <p className="   font-bold text-md sm:text:md gray-900 line-clamp-2">
+        <p className="   font-bold text-lg sm:text-xl gray-900 line-clamp-2">
           {blog.title}
         </p>
         <div className="flex gap-x-5">
-         
-          <p className="text-sx text-gray-600">{"9 min read"}</p>
-       
-            {<Badge variant={"outline"}>Technology</Badge>}
-        
+          <p className="text-xs  my-auto text-gray-600">{"9 min read"}</p>
+
+          <Badge variant={"outline"} className="text-xs">Technology</Badge>
         </div>
       </div>
       <div className=" w-[170px] sm:w-[250px] h-full sm:py-2 py-2">
