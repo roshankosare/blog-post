@@ -5,17 +5,19 @@ import { HTMLAttributes } from "react";
 interface AvatarProps extends HTMLAttributes<HTMLDivElement> {
   width: number;
   hight: number;
+  src:string
 }
 
 const Avatar: React.FC<AvatarProps> = ({
   width,
   hight,
   className,
+  src,
   ...props
 }) => {
   return (
     <Image
-      src={"/avatar.png"}
+      src={src}
       width={width}
       height={hight}
       alt="DP"

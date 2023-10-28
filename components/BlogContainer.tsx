@@ -4,10 +4,12 @@ import Card from "./ui/Card";
 import { getBlogs } from "@/lib/posts";
 import Link from "next/link";
 
-interface BlogContainerProps {}
+interface BlogContainerProps {
+  blogs:Partial<Blog & {auther:{username:string,email:string}}>[];
+}
 
-const BlogContainer: React.FC<BlogContainerProps> = async ({}) => {
-  const blogs = await getBlogs();
+const BlogContainer: React.FC<BlogContainerProps> =  ({blogs}) => {
+ 
 
   return (
     <div className="w-full flex flex-col sm:flex-wrap max-h-full bg-transparent  overflow-y-scroll gap-y-2 no-scrollbar ">
