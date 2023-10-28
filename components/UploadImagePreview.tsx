@@ -41,7 +41,7 @@ export const UploadImagePreview: FC<UploadImagePreviewProps> = ({
             alt="selected image"
           ></Image>
         </div>
-        <DialogFooter className="gap-x-5">
+        <DialogFooter className="gap-x-5 gap-y-5 ">
           <Button onClick={() => onImageUpload()}>Uplaod</Button>
           <DialogClose asChild>
             <Button variant={"outline"} onClick={() => onClose()}>

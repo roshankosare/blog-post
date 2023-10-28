@@ -6,14 +6,22 @@ import { useRouter, usePathname } from "next/navigation";
 import { Button, buttonVariants } from "./ui/button";
 import { signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
+import { FaCircleUser } from "react-icons/fa6";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 
 type AuthLink = {
   href: string;
   label: string;
   // icon:ReactNode;
 };
-
-
 
 const Header = ({}) => {
   const singOutHadler = async () => {
@@ -34,17 +42,71 @@ const Header = ({}) => {
       <div className="sm:flex flex-row gap-x-10 px-2">
         {session.status === "loading" ? null : session.status ===
           "authenticated" ? (
-          <div className="hidden sm:flex gap-x-8">
-            <div className="flex gap-x-8 items-center">
-              <Link className = {""}href={"/blog/create"}>Write</Link>
-              <Link className = {""}href={"/"}>My blogs</Link>
-              <Link className = {""}href={"/"}>Profile</Link>
+          <div>
+            <div className="hidden sm:flex gap-x-8">
+              <div className="flex gap-x-8 items-center">
+                <Link className={""} href={"/blog/create"}>
+                  Write
+                </Link>
+                <Link className={""} href={"/"}>
+                  My blogs
+                </Link>
+                <Link className={""} href={"/"}>
+                  Profile
+                </Link>
+              </div>
+              <Button
+                size={"sm"}
+                onClick={() => {
+                  singOutHadler();
+                }}
+              >
+                Sign Out
+              </Button>
             </div>
-            <Button  size={"sm"} onClick={()=>{singOutHadler()}}>Sign Out</Button>
+
+            <div className="sm:hidden">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant={"outline"}
+                    className="text-3xl text-black rounded-full px-1 py-1 border-gray-600 "
+                  >
+                    <FaCircleUser />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56">
+                  <DropdownMenuLabel>Menu</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem>Profile</DropdownMenuItem>
+                    <DropdownMenuItem>Write</DropdownMenuItem>
+                    <DropdownMenuItem>My blogs</DropdownMenuItem>
+
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      onClick={() => {
+                        singOutHadler();
+                      }}
+                    >
+                      Log Out
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </div>
         ) : (
           <div>
-            <Link  className = {cn(buttonVariants({variant:"default",size:"sm"}),"rounded-full px-5")}href={"/sign-in"}>Get Started</Link>
+            <Link
+              className={cn(
+                buttonVariants({ variant: "default", size: "sm" }),
+                "rounded-full px-5"
+              )}
+              href={"/sign-in"}
+            >
+              Get Started
+            </Link>
           </div>
         )}
       </div>

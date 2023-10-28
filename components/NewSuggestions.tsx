@@ -13,7 +13,7 @@ interface NewSuggetionsProps {
 
 const NewSuggetions: React.FC<NewSuggetionsProps> = ({ blogs }) => {
   return (
-    <Card className="flex flex-col h-[400px]  w-full border-0 gap-y-5 ">
+    <Card className="flex flex-col h-[400px]  w-full border-0 gap-y-5 px-5 ">
       <p className="font-bold text-gray-600">Recently Added Articles</p>
       <div className="flex flex-col  gap-y-4">
         {blogs.map((blog) => (

@@ -12,6 +12,7 @@ import { useToast } from "@/components/ui/use-toast";
 import Loader from "@/components/Loader";
 import { UploadImagePreview } from "@/components/UploadImagePreview";
 import { Blog } from "@prisma/client";
+import { Input } from "@/components/ui/input";
 
 const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
   const [blogImage, setBlogImage] = useState<File | null>(null);
@@ -92,13 +93,13 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
     <div className="w-full sm:max-w-5xl h-auto mx-auto  bg-white  flex flex-col gap-y-5 sm:px-10  sm:py-10 px-2 py-2 mb-10">
       <div>
         {!loading && blog ? (
-          <div className="flex justify-between flex-col sm:flex-row gap-y-4">
+          <div className="flex justify-between flex-col sm:flex-row gap-y-4 gap-x-5">
             {blog ? (
-              <p className=" text-xl sm:text-2xl  font-bold">{blog.title}</p>
+              <Input value={blog.title} onChange={()=>{}}  className=" text-xl sm:text-2xl   font-bold"></Input>
             ) : (
               <Skeleton className="w-full"></Skeleton>
             )}
-            <Button variant={"outline"} size={"sm"}>
+            <Button variant={"outline"} size={"sm"} className=" w-24 sm:py-5">
               Edit Title
             </Button>
           </div>
