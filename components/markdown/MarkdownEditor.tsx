@@ -46,7 +46,7 @@ const MarkdownEditor: React.FC<MarkdownProps> = ({
     return;
   };
   return (
-    <Card className="w-full min-h-screen  flex flex-col px-2 py-2 rounded-sm">
+    <Card className="w-full  min-h-[700px]   flex flex-col rounded-sm border-none p-0">
       <MarkdownNavBar
         setMarkDownText={(value: string) => setMarkdownTextSnippits(value)}
         setBlogImage={setBlogImage}
@@ -68,7 +68,7 @@ const MarkdownEditor: React.FC<MarkdownProps> = ({
             value={markdownValue}
             name=""
             id=""
-            className="w-full min-h-screen outline-none px-2 py-2 overflow-y-scroll no-scrollbar"
+            className="w-full bg-gray-50 h-[600px] sm:h-[700px] outline-none px-2 py-2 overflow-y-scroll no-scrollbar"
             ref={markDownTextAreaRef}
           ></textarea>
         ) : null}

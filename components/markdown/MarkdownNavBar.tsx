@@ -58,14 +58,12 @@ const MarkdownNavBar: React.FC<MarkdownNavBarProps> = ({
     fileInputRef.current?.click();
   };
 
-
-
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [showModel,setShowModel] = useState<boolean>(false);
+  const [showModel, setShowModel] = useState<boolean>(false);
 
   return (
-    <div className="w-full h-12 flex  px-5 py-2 border border-gray-200 rounded-sm justify-between">
-      <div className="flex gap-x-5">
+    <div className="w-full h-auto sm:h-12 flex flex-col gap-y-2 sm:flex-row  px-2 sm:px-5 py-2 border border-gray-200 rounded-sm justify-between">
+      <div className="flex  gap-x-3  sm:gap-x-5 ">
         <TooltipMarkdownTool tipText="Add Heading">
           <Button
             variant={"outline"}
@@ -151,11 +149,11 @@ const MarkdownNavBar: React.FC<MarkdownNavBarProps> = ({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className=" flex gap-x-5">
+      <div className=" flex gap-x-2 sm:gap-x-5">
         <Toggle enable={preview} label="Preview" onClick={() => setPreview()} />
         <Button
           onClick={() => showImageUpload()}
-          size={"sm"}
+          size={"xs"}
           variant={"outline"}
           className="my-auto"
         >
@@ -181,7 +179,6 @@ const MarkdownNavBar: React.FC<MarkdownNavBarProps> = ({
           }
         }}
       />
-    
     </div>
   );
 };

@@ -89,12 +89,12 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
   }
 
   return (
-    <div className="w-full sm:max-w-5xl h-auto mx-auto  bg-white  flex flex-col gap-y-5 px-10 py-10">
+    <div className="w-full sm:max-w-5xl h-auto mx-auto  bg-white  flex flex-col gap-y-5 sm:px-10  sm:py-10 px-2 py-2 mb-10">
       <div>
         {!loading && blog ? (
-          <div className="flex justify-between">
+          <div className="flex justify-between flex-col sm:flex-row gap-y-4">
             {blog ? (
-              <p className="text-3xl font-bold">{blog.title}</p>
+              <p className=" text-xl sm:text-2xl  font-bold">{blog.title}</p>
             ) : (
               <Skeleton className="w-full"></Skeleton>
             )}

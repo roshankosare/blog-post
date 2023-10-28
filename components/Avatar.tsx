@@ -22,7 +22,7 @@ const Avatar: React.FC<AvatarProps> = ({
       height={hight}
       alt="DP"
       className={cn(
-        "rounded-lg border-gray-300 border  bg-gray-100",
+        "rounded-full border-gray-300 border  bg-gray-100",
         className
       )}
     />

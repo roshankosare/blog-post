@@ -11,6 +11,7 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import Loader from "@/components/Loader";
 import { redirect, useRouter } from "next/navigation";
+import Card from "@/components/ui/Card";
 
 interface NewBlogProps {}
 
@@ -44,7 +45,7 @@ const NewBlog: React.FC<NewBlogProps> = ({}) => {
   };
 
   return (
-    <div className="w-full sm:max-w-5xl h-auto mx-auto  bg-white  flex flex-col gap-y-5 px-10 py-5">
+    <Card className="w-full sm:max-w-5xl h-auto mx-auto  bg-white  flex flex-col px-4 gap-y-5 sm:px-10 sm:py-10 border-none sm:border-solid">
       <h1 className="w-full text-center text-3xl font-bold">Create new Blog</h1>
       {error && <ErrorBox>{error}</ErrorBox>}
 
@@ -57,7 +58,7 @@ const NewBlog: React.FC<NewBlogProps> = ({}) => {
           value={title}
         />
       </div>
-      <div className="flex flex-row w-full gap-x-5">
+      <div className="flex flex-col sm:flex-row gap-y-4 w-full sm:gap-x-5">
         <Label className="my-auto"> Select cover image</Label>
         <Button
           variant={"default"}
@@ -104,7 +105,7 @@ const NewBlog: React.FC<NewBlogProps> = ({}) => {
         onChange={(e) => setCoverImage(e.target.files?.[0] || null)}
         ref={imageInputRef}
       />
-    </div>
+    </Card>
   );
 };
 
