@@ -17,22 +17,18 @@ import { cn } from "@/lib/utils";
 
 import { useState } from "react";
 import ErrorBox from "./ErrorBox";
-import { useRouter } from "next/navigation";
-
+import { useRouter, useSearchParams } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 interface SignInFormProps {
-  onSignIn: ({
-    email,
-    password,
-  }: {
-    email: string;
-    password: string;
-  }) => Promise<void>;
+  
 }
 
-const SignInForm: React.FC<SignInFormProps> = ({ onSignIn }) => {
+const SignInForm: React.FC<SignInFormProps> = ({}) => {
   const [signInError, setSignInError] = useState<string | null>(null);
-  const router = useRouter();
+
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackURL") || "/";
   const formSchema = z.object({
     email: z
       .string()
@@ -42,14 +38,14 @@ const SignInForm: React.FC<SignInFormProps> = ({ onSignIn }) => {
   });
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setSignInError(null);
-    onSignIn({ email: values.email, password: values.password })
-      .then(() => {
-       router.push("/");
-      })
-      .catch((error: Error) => {
-        console.log(error);
-        setSignInError(error.message || "something went wrong try again");
-      });
+    signIn("credentials", {
+      callbackUrl: callbackUrl,
+      email: values.email,
+      password: values.password,
+    }).catch((error: Error) => {
+      console.log(error);
+      setSignInError(error.message || "something went wrong try again");
+    });
   }
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -105,6 +101,16 @@ const SignInForm: React.FC<SignInFormProps> = ({ onSignIn }) => {
           Sign Up
         </Link>
       </div>
+      <Button
+        variant={"outline"}
+        className="w-full"
+        type="submit"
+        onClick={async () => {
+          await signIn("google", { callbackUrl: callbackUrl });
+        }}
+      >
+        Sign In with Google
+      </Button>
     </div>
   );
 };

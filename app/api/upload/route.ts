@@ -5,8 +5,9 @@ import { authOptionts } from "../auth/[...nextauth]/route";
 
 export async function POST(req: Request) {
   try {
-    const sesssion = await getServerSession(authOptionts);
-    if (!sesssion?.user)
+    const session = await getServerSession(authOptionts);
+    console.log(session)
+    if (!session?.user)
       return NextResponse.json({ error: "unauthorized" }, { status: 403 });
     const form = await req.formData();
     const image = form.get("image");

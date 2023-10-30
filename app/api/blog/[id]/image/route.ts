@@ -9,8 +9,9 @@ export async function POST(
   { params }: { params: { id: string } }
 ) {
   try {
-    const sesssion = await getServerSession(authOptionts);
-    if (!sesssion?.user)
+    const session = await getServerSession(authOptionts);
+    console.log(session)
+    if (!session?.user)
       return NextResponse.json({ error: "unauthorized" }, { status: 403 });
     const form = await req.formData();
     const image = form.get("image");
@@ -24,7 +25,7 @@ export async function POST(
     if (!blog)
       return NextResponse.json({ error: "invalid blog Id" }, { status: 400 });
 
-    if (blog.autherId !== sesssion.user.id)
+    if (blog.autherId !== session.user.id)
       return NextResponse.json({ error: "forbidden" }, { status: 403 });
 
     const url = (await utapi.uploadFiles(image)).data?.url;

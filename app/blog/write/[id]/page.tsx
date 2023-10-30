@@ -95,7 +95,11 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
         {!loading && blog ? (
           <div className="flex justify-between flex-col sm:flex-row gap-y-4 gap-x-5">
             {blog ? (
-              <Input value={blog.title} onChange={()=>{}}  className=" text-xl sm:text-2xl   font-bold"></Input>
+              <Input
+                value={blog.title}
+                onChange={() => {}}
+                className=" text-xl sm:text-2xl   font-bold"
+              ></Input>
             ) : (
               <Skeleton className="w-full"></Skeleton>
             )}

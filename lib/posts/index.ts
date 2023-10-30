@@ -39,6 +39,7 @@ export const getBlog = async (id: string) => {
           select: {
             username: true,
             email: true,
+            avatar:true
           },
         },
       },

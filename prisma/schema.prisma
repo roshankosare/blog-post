@@ -26,8 +26,8 @@ model UserProfile {
   id        String   @id @default(uuid())
   email     String   @unique
   username  String
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String   @unique
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?  @unique
   avatar    String?
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())

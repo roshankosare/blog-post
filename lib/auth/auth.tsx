@@ -25,18 +25,22 @@ const signUp = async ({
         email,
         password: hashedPassword,
         username,
+        userProfile: {
+          create: {
+            email: email,
+            username: username,
+            avatar: "/avatar.png",
+          },
+        },
       },
     });
 
-    const newUserProfile = await prisma.userProfile.create({
-      data: {
-        email: created.email,
-        username: created.username,
+    const userProfile = prisma.userProfile.findUnique({
+      where: {
         userId: created.id,
       },
     });
-
-    return newUserProfile;
+    return userProfile;
   } catch (error) {
     if (error instanceof Error) {
       if (error.message.includes("email")) {
@@ -83,5 +87,42 @@ const signIn = async ({
     throw new Error("Internal server Error");
   }
 };
+const createUserProfile = async ({
+  email,
+  username,
+  avatar,
+}: {
+  email: string;
+  username: string;
+  avatar: string;
+}) => {
+  try {
+    const userProfile = await prisma.userProfile.upsert({
+      where: {
+        email: email,
+      },
+      update: {},
+      create: {
+        email: email,
+        username: username,
+        avatar: avatar,
+      },
+    });
 
-export { signIn, signUp };
+    return userProfile;
+  } catch (error) {
+    console.log(error);
+    throw new Error("internal server Error");
+  }
+};
+
+const getUserProfile = async (email:string)=>{
+  const user = await prisma.userProfile.findUnique({
+    where:{
+      email:email
+    }
+  });
+  return user;
+}
+
+export { signIn, signUp, createUserProfile,getUserProfile };

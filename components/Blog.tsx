@@ -6,7 +6,9 @@ import Avatar from "./Avatar";
 import { Badge } from "./ui/badge";
 
 export interface BlogProps {
-  blog: Partial<Blog & { auther: { username: string; email: string } }>;
+  blog: Partial<
+    Blog & { auther: { username: string; email: string; avatar: string } }
+  >;
 }
 
 const BlogCard: React.FC<BlogProps> = ({ blog }) => {
@@ -15,7 +17,7 @@ const BlogCard: React.FC<BlogProps> = ({ blog }) => {
       <div className="flex flex-col h-full w-full justify-between px-2 py-2">
         <div className="w-full flex flex-row gap-x-3 ">
           <Avatar
-            src="/avatar.png"
+            src={blog.auther?.avatar || "/avatar.png"}
             width={40}
             hight={40}
             className="w-6 h-6 sm:w-8 sm:h-8"

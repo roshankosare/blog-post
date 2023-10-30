@@ -5,7 +5,7 @@ import Avatar from "./Avatar";
 interface NewSuggetionsProps {
   blogs: Partial<
     Pick<
-      Blog & { auther: { username: string; email: string } },
+      Blog & { auther: { username: string; email: string,avatar:string } },
       "id" | "title" | "auther" | "createdAt"
     >
   >[];
@@ -23,7 +23,7 @@ const NewSuggetions: React.FC<NewSuggetionsProps> = ({ blogs }) => {
           >
             <div className="flex justify-start gap-x-2">
               <Avatar
-                src="/avatar.png"
+                src={blog.auther?.avatar || "/avatar.png"}
                 width={40}
                 hight={40}
                 className="w-6 h-6"
