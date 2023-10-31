@@ -5,12 +5,12 @@ import { getBlogs } from "@/lib/posts";
 import Link from "next/link";
 
 interface BlogContainerProps {
-  blogs:Partial<Blog & {auther:{username:string,email:string,avatar:string}}>[];
+  blogs: Partial<
+    Blog & { auther: { username: string; email: string; avatar: string } }
+  >[];
 }
 
-const BlogContainer: React.FC<BlogContainerProps> =  ({blogs}) => {
- 
-
+const BlogContainer: React.FC<BlogContainerProps> = ({ blogs }) => {
   return (
     <div className="w-full flex flex-col sm:flex-wrap max-h-full bg-transparent  overflow-y-scroll gap-y-2 no-scrollbar ">
       {blogs.map((blog) => {

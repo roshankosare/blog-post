@@ -29,7 +29,6 @@ const Header = ({}) => {
     router.push("/");
   };
   const router = useRouter();
-  const pathname = usePathname();
   const session = useSession();
   return (
     <div className="w-full inset-x-0 z-10 mb-5 top-0 px-2 py-3 sm:px-5 sticky sm:py-5 flex justify-between items-center bg-white border-b-[2px] border-black">
@@ -79,9 +78,9 @@ const Header = ({}) => {
                   <DropdownMenuLabel>Menu</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>
-                    <DropdownMenuItem>Profile</DropdownMenuItem>
-                    <DropdownMenuItem>Write</DropdownMenuItem>
-                    <DropdownMenuItem>My blogs</DropdownMenuItem>
+                    <DropdownMenuItem><Link href={"/myprofile"}>Profile</Link></DropdownMenuItem>
+                    <DropdownMenuItem><Link href={"/blog/create"}>Write</Link></DropdownMenuItem>
+                    <DropdownMenuItem><Link href={"/myblogs"}>My blogs</Link></DropdownMenuItem>
 
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
