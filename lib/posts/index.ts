@@ -12,6 +12,7 @@ export const getBlogs = async (): Promise<Partial<Blog>[]> => {
         dislikes: true,
         createdAt: true,
         coverImage: true,
+        readTime:true,
         auther: {
           select: {
             username: true,

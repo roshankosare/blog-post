@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 import { authOptionts } from "../../auth/[...nextauth]/route";
 import { remark } from "remark";
 import html from "remark-html";
+import { calculateReadtime } from "@/lib/utils";
 
 export async function GET(
   req: Request,
@@ -48,6 +49,7 @@ export async function PATCH(
       body.markdownHTML = (
         await remark().use(html).process(markdown)
       ).toString();
+      body.readTime = calculateReadtime(body.markdownHTML);
     }
 
     const blog = await prisma.blog.update({

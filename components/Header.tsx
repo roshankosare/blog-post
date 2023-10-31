@@ -78,9 +78,15 @@ const Header = ({}) => {
                   <DropdownMenuLabel>Menu</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>
-                    <DropdownMenuItem><Link href={"/myprofile"}>Profile</Link></DropdownMenuItem>
-                    <DropdownMenuItem><Link href={"/blog/create"}>Write</Link></DropdownMenuItem>
-                    <DropdownMenuItem><Link href={"/myblogs"}>My blogs</Link></DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link href={"/myprofile"}>Profile</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link href={"/blog/create"}>Write</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link href={"/myblogs"}>My blogs</Link>
+                    </DropdownMenuItem>
 
                     <DropdownMenuSeparator />
                     <DropdownMenuItem

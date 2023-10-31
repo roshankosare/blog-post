@@ -35,14 +35,14 @@ const BlogCard: React.FC<BlogProps> = ({ blog }) => {
           {blog.title}
         </p>
         <div className="flex gap-x-5">
-          <p className="text-xs  my-auto text-gray-600">{"9 min read"}</p>
+          <p className="text-xs  my-auto text-gray-600">{blog.readTime+" min read"} </p>
 
           <Badge variant={"outline"} className="text-xs">
             Technology
           </Badge>
         </div>
       </div>
-      <div className=" w-[170px] sm:w-[250px] h-full sm:py-2 py-2">
+      <div className=" w-[120px] sm:w-[250px] sm:h-full h-[75px] my-auto sm:py-2 py-2">
         <Image
           width={400}
           height={350}

@@ -6,7 +6,7 @@ interface NewSuggetionsProps {
   blogs: Partial<
     Pick<
       Blog & { auther: { username: string; email: string; avatar: string } },
-      "id" | "title" | "auther" | "createdAt"
+      "id" | "title" | "auther" | "createdAt" |"readTime"
     >
   >[];
 }
@@ -32,7 +32,7 @@ const NewSuggetions: React.FC<NewSuggetionsProps> = ({ blogs }) => {
             </div>
             <p className="text-sm font-bold line-clamp-1">{blog.title}</p>
             <div className="flex gap-x-2">
-              <p className="text-xs text-gray-600">9 min read</p>
+              <p className="text-xs text-gray-600">{blog.readTime+" min read"}</p>
               <p className="text-xs text-gray-600">Oct 9</p>
             </div>
           </div>
