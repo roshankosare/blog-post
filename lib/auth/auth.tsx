@@ -35,11 +35,13 @@ const signUp = async ({
       },
     });
 
-    const userProfile = prisma.userProfile.findUnique({
+    const userProfile = await prisma.userProfile.findUnique({
       where: {
         userId: created.id,
       },
     });
+    if(!userProfile)
+    throw new Error("Internal server error");
     return userProfile;
   } catch (error) {
     if (error instanceof Error) {
