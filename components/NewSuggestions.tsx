@@ -5,7 +5,7 @@ import Avatar from "./Avatar";
 interface NewSuggetionsProps {
   blogs: Partial<
     Pick<
-      Blog & { auther: { username: string; email: string,avatar:string } },
+      Blog & { auther: { username: string; email: string; avatar: string } },
       "id" | "title" | "auther" | "createdAt"
     >
   >[];

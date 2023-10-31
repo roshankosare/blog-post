@@ -5,7 +5,7 @@ import { getBlogs } from "@/lib/posts";
 import Link from "next/link";
 
 interface BlogContainerProps {
-  blogs:Partial<Blog & {auther:{username:string,email:string}}>[];
+  blogs:Partial<Blog & {auther:{username:string,email:string,avatar:string}}>[];
 }
 
 const BlogContainer: React.FC<BlogContainerProps> =  ({blogs}) => {

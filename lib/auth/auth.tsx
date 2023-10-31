@@ -40,8 +40,7 @@ const signUp = async ({
         userId: created.id,
       },
     });
-    if(!userProfile)
-    throw new Error("Internal server error");
+    if (!userProfile) throw new Error("Internal server error");
     return userProfile;
   } catch (error) {
     if (error instanceof Error) {
@@ -118,13 +117,13 @@ const createUserProfile = async ({
   }
 };
 
-const getUserProfile = async (email:string)=>{
+const getUserProfile = async (email: string) => {
   const user = await prisma.userProfile.findUnique({
-    where:{
-      email:email
-    }
+    where: {
+      email: email,
+    },
   });
   return user;
-}
+};
 
-export { signIn, signUp, createUserProfile,getUserProfile };
+export { signIn, signUp, createUserProfile, getUserProfile };
