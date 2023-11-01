@@ -13,6 +13,8 @@ import Loader from "@/components/Loader";
 import { UploadImagePreview } from "@/components/UploadImagePreview";
 import { Blog } from "@prisma/client";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 
 const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
   const [blogImage, setBlogImage] = useState<File | null>(null);
@@ -91,9 +93,11 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
 
   return (
     <div className="w-full sm:max-w-5xl h-auto mx-auto  bg-white  flex flex-col gap-y-5 sm:px-10  sm:py-10 px-2 py-2 mb-10">
+       <Label>Title</Label>
       <div>
         {!loading && blog ? (
           <div className="flex justify-between flex-col sm:flex-row gap-y-4 gap-x-5">
+           
             {blog ? (
               <Input
                 value={blog.title}
@@ -110,6 +114,15 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
         ) : (
           <Skeleton className="w-full h-14"></Skeleton>
         )}
+      </div>
+      <Label>Tags</Label>
+      <div className="flex justify-between flex-col sm:flex-row gap-y-4 gap-x-5">
+          <Input placeholder="create new tag or search">
+           
+          </Input>
+          <Button variant={"outline"} size={"sm"} className=" w-24 sm:py-5">
+            Save
+          </Button>
       </div>
       {blog && (
         <MarkdownEditor
