@@ -45,6 +45,28 @@ export async function PATCH(
     const blogId = params.id;
     const body = await req.json();
     const markdown = body.markdownString;
+    const tags = body.tags || [];
+    const tagIds = await Promise.all(
+      tags.map(async (tagName: string) => {
+        // Try to find the tag by name
+        const existingTag = await prisma.tag.findFirst({
+          where: { name: tagName },
+        });
+
+        if (existingTag) {
+          return existingTag.id;
+        } else {
+          // If the tag doesn't exist, create a new one
+          const newTag = await prisma.tag.create({
+            data: {
+              name: tagName,
+            },
+          });
+          return newTag.id;
+        }
+      })
+    );
+
     if (markdown) {
       body.markdownHTML = (
         await remark().use(html).process(markdown)
@@ -56,7 +78,12 @@ export async function PATCH(
       where: {
         id: blogId,
       },
-      data: body,
+      data: {
+        ...body,
+        tags: {
+          connect: tagIds.map((id) => ({ id })),
+        },
+      },
     });
     if (!blog)
       return NextResponse.json({ error: "invalid blog id" }, { status: 400 });

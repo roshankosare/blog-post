@@ -12,7 +12,7 @@ export const getBlogs = async (): Promise<Partial<Blog>[]> => {
         dislikes: true,
         createdAt: true,
         coverImage: true,
-        readTime:true,
+        readTime: true,
         auther: {
           select: {
             username: true,
@@ -40,7 +40,7 @@ export const getBlog = async (id: string) => {
           select: {
             username: true,
             email: true,
-            avatar:true
+            avatar: true,
           },
         },
       },
@@ -79,10 +79,17 @@ export const postBlog = async ({
 
 export const updateBlog = async (
   blogBody: Partial<Pick<Blog, "markdownString" | "title" | "published">>,
-  blogId: string
+  blogId: string,
+  tags: string[],
+  title?: string
 ) => {
   try {
-    const res = await axios.patch(`/api/blog/${blogId}`, blogBody);
+    if (tags.length > 0) {
+      const res = await axios.patch(`/api/blog/${blogId}`, {
+        ...blogBody,
+        tags: tags,
+      });
+    }
   } catch (error) {
     throw new Error("unauthorized person");
   }
