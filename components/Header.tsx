@@ -47,10 +47,7 @@ const Header = ({}) => {
                 <Link className={""} href={"/blog/create"}>
                   Write
                 </Link>
-                <Link className={""} href={"/"}>
-                  My blogs
-                </Link>
-                <Link className={""} href={"/"}>
+                <Link className={""} href={"/my-profile"}>
                   Profile
                 </Link>
               </div>
@@ -79,14 +76,12 @@ const Header = ({}) => {
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>
                     <DropdownMenuItem>
-                      <Link href={"/myprofile"}>Profile</Link>
+                      <Link href={"/my-profile"}>Profile</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
                       <Link href={"/blog/create"}>Write</Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Link href={"/myblogs"}>My blogs</Link>
-                    </DropdownMenuItem>
+                    
 
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
