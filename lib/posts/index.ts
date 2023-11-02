@@ -80,16 +80,19 @@ export const postBlog = async ({
 export const updateBlog = async (
   blogBody: Partial<Pick<Blog, "markdownString" | "title" | "published">>,
   blogId: string,
-  tags: string[],
-  title?: string
+  tags?: string[]
 ) => {
   try {
-    if (tags.length > 0) {
+    if (tags && tags.length > 0) {
       const res = await axios.patch(`/api/blog/${blogId}`, {
         ...blogBody,
         tags: tags,
       });
+      return;
     }
+    const res = await axios.patch(`/api/blog/${blogId}`, {
+      ...blogBody,
+    });
   } catch (error) {
     throw new Error("unauthorized person");
   }

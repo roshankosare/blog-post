@@ -5,6 +5,8 @@ import { authOptionts } from "../../auth/[...nextauth]/route";
 import { remark } from "remark";
 import html from "remark-html";
 import { calculateReadtime } from "@/lib/utils";
+import { Blog } from "@prisma/client";
+
 
 export async function GET(
   req: Request,
@@ -45,10 +47,16 @@ export async function PATCH(
     const blogId = params.id;
     const body = await req.json();
     const markdown = body.markdownString;
+    const title = body.title;
     const tags = body.tags || [];
+    const updateBody: Partial<
+      Pick<
+        Blog,
+        "markdownString" | "markdownHTML" | "title" | "readTime" 
+      >
+    > = {};
     const tagIds = await Promise.all(
       tags.map(async (tagName: string) => {
-        // Try to find the tag by name
         const existingTag = await prisma.tag.findFirst({
           where: { name: tagName },
         });
@@ -56,7 +64,6 @@ export async function PATCH(
         if (existingTag) {
           return existingTag.id;
         } else {
-          // If the tag doesn't exist, create a new one
           const newTag = await prisma.tag.create({
             data: {
               name: tagName,
@@ -68,23 +75,30 @@ export async function PATCH(
     );
 
     if (markdown) {
-      body.markdownHTML = (
+      updateBody.markdownString = markdown;
+      updateBody.markdownHTML = (
         await remark().use(html).process(markdown)
       ).toString();
-      body.readTime = calculateReadtime(body.markdownHTML);
+      updateBody.readTime = calculateReadtime(body.markdownHTML);
     }
+
+   
+
+   
+    if (title) updateBody.title = title;
 
     const blog = await prisma.blog.update({
       where: {
         id: blogId,
       },
       data: {
-        ...body,
+        ...updateBody,
         tags: {
           connect: tagIds.map((id) => ({ id })),
         },
       },
     });
+    
     if (!blog)
       return NextResponse.json({ error: "invalid blog id" }, { status: 400 });
 

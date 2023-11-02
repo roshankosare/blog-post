@@ -7,7 +7,7 @@ import { updateBlog } from "@/lib/posts";
 import axios from "axios";
 import { notFound } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ToastAction } from "@/components/ui/toast";
+
 import { useToast } from "@/components/ui/use-toast";
 import Loader from "@/components/Loader";
 import { UploadImagePreview } from "@/components/UploadImagePreview";
@@ -49,7 +49,10 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
   };
 
   useEffect(() => {
-    if (tag === "") {
+    if (!tag) {
+      return;
+    }
+    if (tag === "" || tag?.length < 4) {
       setQueryTags([]);
       return;
     }
@@ -70,7 +73,7 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
   const saveBlog = async () => {
     try {
       setSaveDisabled(true);
-      await updateBlog({ markdownString: markdown }, params.id,tags);
+      await updateBlog({ markdownString: markdown }, params.id, tags);
       toast({
         title: "Saved",
         description: "Your Blog has been updated successfully",
@@ -84,15 +87,26 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
   };
 
   const publishBlog = async () => {
-    setPublishedDisabled(true);
-    await updateBlog({ published: true }, params.id,tags);
-    toast({
-      title: "Published",
-      description: "Your Blog has been published successfully",
-    });
-    setTriggerBlogUpadate((pre) => !pre);
-    setPublishedDisabled(false);
+    // setPublishedDisabled(true);
+    // await updateBlog({ published: true }, params.id,[]);
+    // toast({
+    //   title: "Published",
+    //   description: "Your Blog has been published successfully",
+    // });
+    // setTriggerBlogUpadate((pre) => !pre);
+    // setPublishedDisabled(false);
   };
+  const unpublishBlog = async ()=>{
+    // setPublishedDisabled(true);
+    // await updateBlog({ published: false }, params.id);
+    // toast({
+    //   title: "Published",
+    //   description: "Your Blog has been unpublished successfully",
+    // });
+    // setTriggerBlogUpadate((pre) => !pre);
+    // setPublishedDisabled(false);
+  
+  }
   useEffect(() => {
     axios
       .get(`/api/blog/${params.id}`)
@@ -159,6 +173,7 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
             onChange={(e) => {
               setTag(e.target.value);
             }}
+            value={tag || ""}
           ></Input>
 
           <Button
@@ -168,7 +183,6 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
             onClick={() => {
               if (tag && !tags.includes(tag)) {
                 setTags((prevTags) => [...prevTags, tag]);
-                
               }
             }}
           >
@@ -176,53 +190,60 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
           </Button>
         </div>
 
-        <ul className="flex flex-col">
-          {queryTags.map((tag) => (
-            <li
-              key={tag.id}
-              onClick={() => {
-                if (!tags.includes(tag.name)) {
-                  setTags((prevTags) => [...prevTags, tag.name]);
-                 
-                }
-                setQueryTags([]);
-              }}
-            >
-              {tag.name}
-            </li>
-          ))}
-        </ul>
+        {queryTags.length > 0 ? (
+          <ul className="flex flex-col  px-1 py-1 my-2 border border-gray-300 rounded-md max-h-40 overflow-y-scroll no-scrollbar">
+            {queryTags.map((tag) => (
+              <li
+                className="hover:bg-gray-50 px-1 py-1 cursor-pointer"
+                key={tag.id}
+                onClick={() => {
+                  if (!tags.includes(tag.name)) {
+                    setTags((prevTags) => [...prevTags, tag.name]);
+                  }
+                  setQueryTags([]);
+                  setTag("");
+                }}
+              >
+                {tag.name}
+              </li>
+            ))}
+          </ul>
+        ) : null}
       </div>
       {blog && (
-        <MarkdownEditor
-          images={blog.images.map((image: any) => image.url)}
-          setBlogImage={(image: File) => setBlogImage(image)}
-          uploadBlogImage={uploadBlogImage}
-          setMarkdownValue={(value: string) => setMarkdown(value)}
-          markdownValue={markdown}
-        />
+        <>
+          <MarkdownEditor
+            images={blog.images.map((image: any) => image.url)}
+            setBlogImage={(image: File) => setBlogImage(image)}
+            uploadBlogImage={uploadBlogImage}
+            setMarkdownValue={(value: string) => setMarkdown(value)}
+            markdownValue={markdown}
+          />
+
+          <div className="flex gap-x-5">
+            <Button
+              disabled={saveDisabled}
+              onClick={() => saveBlog()}
+              className="w-40"
+            >
+              {saveDisabled ? <Loader message="Please wait"></Loader> : "Save"}
+            </Button>
+            <Button
+              disabled={publishDisabled}
+              onClick={() =>{blog.published? unpublishBlog():publishBlog()} }
+              className="w-40"
+            >
+              {/* TODO:- if publish change publish to unpublish */}
+              {publishDisabled ? (
+                <Loader message="Please wait"></Loader>
+              ) : (
+                <>{blog.published ? "Unpublish" : "Publish"}</>
+              )}
+            </Button>
+          </div>
+        </>
       )}
-      <div className="flex gap-x-5">
-        <Button
-          disabled={saveDisabled}
-          onClick={() => saveBlog()}
-          className="w-40"
-        >
-          {saveDisabled ? <Loader message="Please wait"></Loader> : "Save"}
-        </Button>
-        <Button
-          disabled={publishDisabled}
-          onClick={() => publishBlog()}
-          className="w-40"
-        >
-          {/* TODO:- if publish change publish to unpublish */}
-          {publishDisabled ? (
-            <Loader message="Please wait"></Loader>
-          ) : (
-            "Publish"
-          )}
-        </Button>
-      </div>
+
       {blogImage && (
         <UploadImagePreview
           onImageUpload={uploadBlogImage}
