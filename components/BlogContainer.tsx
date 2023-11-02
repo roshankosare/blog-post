@@ -6,7 +6,7 @@ import Link from "next/link";
 
 interface BlogContainerProps {
   blogs: Partial<
-    Blog & { auther: { username: string; email: string; avatar: string } }
+    Blog & { auther: { username: string; email: string; avatar: string  } } & {tags:{name:string}[]} 
   >[];
 }
 

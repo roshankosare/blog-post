@@ -6,6 +6,7 @@ import { getBlogs } from "@/lib/posts";
 
 export default async function Home() {
   const blogs = await getBlogs();
+ 
   return (
     <main className=" w-full lg:max-w-6xl flex  sm:flex-row h-full gap-y-5 gap-x-10 mx-auto flex-col-reverse   ">
       <div className="sm:w-2/3 mx-auto h-screen">

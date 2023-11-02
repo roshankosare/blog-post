@@ -2,7 +2,7 @@ import { Blog } from "@prisma/client";
 import axios, { AxiosError } from "axios";
 import { prisma } from "../prisma/prisma";
 
-export const getBlogs = async (): Promise<Partial<Blog>[]> => {
+export const getBlogs = async () => {
   try {
     const blogs = await prisma.blog.findMany({
       select: {
@@ -20,6 +20,11 @@ export const getBlogs = async (): Promise<Partial<Blog>[]> => {
             avatar: true,
           },
         },
+        tags:{
+          select:{
+            name:true
+          }
+        }
       },
     });
     return blogs;
@@ -43,6 +48,11 @@ export const getBlog = async (id: string) => {
             avatar: true,
           },
         },
+        tags:{
+          select:{
+            name:true
+          }
+        }
       },
     });
     if (!blog) return undefined;

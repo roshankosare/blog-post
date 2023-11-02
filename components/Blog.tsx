@@ -7,7 +7,9 @@ import { Badge } from "./ui/badge";
 
 export interface BlogProps {
   blog: Partial<
-    Blog & { auther: { username: string; email: string; avatar: string } }
+    Blog & { auther: { username: string; email: string; avatar: string } } & {
+      tags: { name: string }[];
+    }
   >;
 }
 
@@ -35,11 +37,15 @@ const BlogCard: React.FC<BlogProps> = ({ blog }) => {
           {blog.title}
         </p>
         <div className="flex gap-x-5">
-          <p className="text-xs  my-auto text-gray-600">{blog.readTime+" min read"} </p>
+          <p className="text-xs  my-auto text-gray-600">
+            {blog.readTime + " min read"}{" "}
+          </p>
 
-          <Badge variant={"outline"} className="text-xs">
-            Technology
-          </Badge>
+          {blog.tags?.slice(0, 1).map((tag) => (
+            <Badge key={tag.name} variant={"outline"} className="text-xs">
+              {tag.name}
+            </Badge>
+          ))}
         </div>
       </div>
       <div className=" w-[120px] sm:w-[250px] sm:h-full h-[75px] my-auto sm:py-2 py-2">
