@@ -1,10 +1,30 @@
-import { Blog } from "@prisma/client";
+import { Blog, Prisma } from "@prisma/client";
 import axios, { AxiosError } from "axios";
 import { prisma } from "../prisma/prisma";
 
-export const getBlogs = async () => {
+export const getBlogs = async ({
+  skip,
+  take,
+  filterByWhere,
+  orderBy,
+}: {
+  skip?: number;
+  take?: number;
+  filterByWhere?: Partial<
+    Pick<Prisma.BlogWhereInput, "autherId" | "title" | "tags" | "createdAt">
+  >;
+  orderBy?: Partial<Pick<Prisma.BlogOrderByWithRelationInput, "createdAt" |"likes">>;
+}) => {
   try {
     const blogs = await prisma.blog.findMany({
+      skip: skip || 0,
+      take: take || 10,
+      where: {
+        ...filterByWhere,
+      },
+      orderBy: {
+        ...orderBy,
+      },
       select: {
         id: true,
         title: true,
@@ -20,11 +40,11 @@ export const getBlogs = async () => {
             avatar: true,
           },
         },
-        tags:{
-          select:{
-            name:true
-          }
-        }
+        tags: {
+          select: {
+            name: true,
+          },
+        },
       },
     });
     return blogs;
@@ -48,11 +68,11 @@ export const getBlog = async (id: string) => {
             avatar: true,
           },
         },
-        tags:{
-          select:{
-            name:true
-          }
-        }
+        tags: {
+          select: {
+            name: true,
+          },
+        },
       },
     });
     if (!blog) return undefined;

@@ -79,7 +79,7 @@ export async function PATCH(
       updateBody.markdownHTML = (
         await remark().use(html).process(markdown)
       ).toString();
-      updateBody.readTime = calculateReadtime(body.markdownHTML);
+      updateBody.readTime = calculateReadtime(updateBody.markdownHTML);
     }
 
    

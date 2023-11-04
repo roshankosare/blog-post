@@ -4,13 +4,28 @@ import Suggested from "@/components/Suggested";
 import TagLinks from "@/components/TagLinks";
 import { getBlogs } from "@/lib/posts";
 
-export default async function Home() {
-  const blogs = await getBlogs();
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
  
+  const blogsHomePage = await getBlogs({
+    skip: 0,
+    take: 10,
+  });
+  const blogsNewsuggetion = await getBlogs({
+    skip: 0,
+    take: 6,
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
   return (
     <main className=" w-full lg:max-w-6xl flex  sm:flex-row h-full gap-y-5 gap-x-10 mx-auto flex-col-reverse   ">
       <div className="sm:w-2/3 mx-auto h-screen">
-        <BlogContainer blogs={blogs} />
+        <BlogContainer blogs={blogsHomePage} />
       </div>
       <div className="flex-col w-full sm:w-1/3 px-2  gap-y-5 flex">
         <div>
@@ -30,7 +45,7 @@ export default async function Home() {
               "Gaming",
             ]}
           />
-          <NewSuggetions blogs={blogs} />
+          <NewSuggetions blogs={blogsNewsuggetion} />
         </div>
       </div>
     </main>

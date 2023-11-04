@@ -12,7 +12,7 @@ interface BlogContainerProps {
 
 const BlogContainer: React.FC<BlogContainerProps> = ({ blogs }) => {
   return (
-    <div className="w-full flex flex-col sm:flex-wrap max-h-full bg-transparent  overflow-y-scroll gap-y-2 no-scrollbar ">
+    <div className="w-full flex flex-col  max-h-full bg-transparent  overflow-y-scroll gap-y-2 no-scrollbar ">
       {blogs.map((blog) => {
         return (
           <Link href={`blog/${blog.id}`} key={blog.id}>
