@@ -23,7 +23,13 @@ export async function GET(
           url: true,
         },
       },
+      tags:{
+        select:{
+          name:true
+        }
+      }
     },
+
   });
 
   if (!blog) {

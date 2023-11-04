@@ -6,7 +6,7 @@ const useTags = () => {
   const [searchInputTag, setSearchInputTag] = useState<string>("");
   const [queryResponseTags, setQueryReponseTags] = useState<string[]>([]);
   const [userSelectedTags, setUserSelectedTags] = useState<string[]>([]);
-  const [blogTags, setBlogTags] = useState<string[] | null>(null);
+  const [blogTags, setBlogTags] = useState<string[] >([]);
 
   useEffect(() => {
     if (searchInputTag.length > 3) queryTagsFromServer(searchInputTag);

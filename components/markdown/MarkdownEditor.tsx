@@ -1,64 +1,42 @@
 "use client";
-
-import { useRef, useState } from "react";
 import Card from "../ui/Card";
 import MarkdownNavBar from "./MarkdownNavBar";
 import MarkdownPreview from "./MarkdownPreview";
 import UploadedImages from "./UploadedImages";
+import useMarkdown from "./hooks/useMarkdown";
 
 interface MarkdownProps {
   markdownValue: string;
   setMarkdownValue: (value: string) => void;
   setBlogImage: (image: File) => void;
   uploadBlogImage: () => Promise<string>;
-  images:string[]
+  images: string[];
 }
 const MarkdownEditor: React.FC<MarkdownProps> = ({
   markdownValue,
   setMarkdownValue,
   setBlogImage,
   uploadBlogImage,
-  images
+  images,
 }) => {
-  const [preview, setPreview] = useState<boolean>(false);
-  const [showUploadedImages, setShowUploadedImages] = useState<boolean>(false);
-  const [showEditor, setShowEditor] = useState<boolean>(true);
+  const {
+    preview,
+    showEditor,
+    showPreviewTab,
+    showUplaodedImagesTab,
+    showUploadedImages,
+    setMarkdownTextSnippits,
+    markDownTextAreaRef,
+  } = useMarkdown({ markdownValue, setMarkdownValue });
 
-  const markDownTextAreaRef = useRef<HTMLTextAreaElement | null>(null);
-
-  const setMarkdownTextSnippits = (value: string) => {
-    const textarea = markDownTextAreaRef.current;
-    if (!textarea) return;
-    const cursorPosition = textarea?.selectionStart;
-    const currentText = markdownValue;
-    const newText =
-      currentText.substring(0, cursorPosition) +
-      value +
-      currentText.substring(cursorPosition);
-
-    setMarkdownValue(newText);
-
-    // textarea.selectionStart = cursorPosition + value.length;
-    // textarea.selectionEnd = cursorPosition + value.length;
-    // console.log(textarea.selectionStart,textarea.selectionEnd)
-
-    // textarea.focus(); 
-    return;
-  };
   return (
     <Card className="w-full  min-h-[700px]   flex flex-col rounded-sm border-none p-0">
       <MarkdownNavBar
         setMarkDownText={(value: string) => setMarkdownTextSnippits(value)}
         setBlogImage={setBlogImage}
         uploadBlogImage={uploadBlogImage}
-        setPreview={() => {
-          setPreview((pre) => !pre);
-          setShowEditor((pre) => !pre);
-        }}
-        showImageUpload={() => {
-          setShowUploadedImages((pre) => !pre);
-          setShowEditor((pre) => !pre);
-        }}
+        setPreview={() => showPreviewTab()}
+        showImageUpload={() => showUplaodedImagesTab()}
         preview={preview}
       />
       <div className="w-full h-full flex flex-col">
@@ -74,10 +52,7 @@ const MarkdownEditor: React.FC<MarkdownProps> = ({
         ) : null}
         {preview ? <MarkdownPreview markdown={markdownValue} /> : null}
         {showUploadedImages ? (
-          <UploadedImages
-            onImageDelete={() => {}}
-            images={images}
-          />
+          <UploadedImages onImageDelete={() => {}} images={images} />
         ) : null}
       </div>
     </Card>
