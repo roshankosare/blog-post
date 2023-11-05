@@ -16,8 +16,14 @@ const useBlogEdit = (blogId: string) => {
   const saveBlog = async ({ tags }: { tags: string[] }) => {
     try {
       //   setSaveDisabled(true);
-      if (editedMarkdown)
-        await updateBlog({ markdownString: editedMarkdown }, blogId, tags);
+      await updateBlog(
+        {
+          title: titleEditValue || undefined,
+          markdownString: editedMarkdown || undefined,
+        },
+        blogId,
+        tags
+      );
       toast({
         title: "Saved",
         description: "Your Blog has been updated successfully",
@@ -56,6 +62,7 @@ const useBlogEdit = (blogId: string) => {
     uploadBlogImage,
     setTitleEditValue,
     blogImageToUpload,
+    titleEditValue
   };
 };
 

@@ -13,7 +13,9 @@ export const getBlogs = async ({
   filterByWhere?: Partial<
     Pick<Prisma.BlogWhereInput, "autherId" | "title" | "tags" | "createdAt">
   >;
-  orderBy?: Partial<Pick<Prisma.BlogOrderByWithRelationInput, "createdAt" |"likes">>;
+  orderBy?: Partial<
+    Pick<Prisma.BlogOrderByWithRelationInput, "createdAt" | "likes">
+  >;
 }) => {
   try {
     const blogs = await prisma.blog.findMany({
@@ -108,7 +110,7 @@ export const postBlog = async ({
 };
 
 export const updateBlog = async (
-  blogBody: Partial<Pick<Blog, "markdownString" | "title" | "published">>,
+  blogBody: { markdownString?: string; title?: string;  },
   blogId: string,
   tags?: string[]
 ) => {

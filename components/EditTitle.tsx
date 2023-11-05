@@ -17,7 +17,7 @@ const EditTitle: React.FC<EditTitleProps> = ({ title, setTitle }) => {
         <Input
           className="w-full"
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e) =>  setTitle(e.target.value) }
           disabled={!isEditable}
         ></Input>
         <Button

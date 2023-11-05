@@ -16,6 +16,7 @@ import useBlogEdit from "@/app/hooks/useBlogEdit";
 import useBlog from "@/app/hooks/useBlog";
 import { notFound } from "next/navigation";
 import EditTitle from "@/components/EditTitle";
+import LoadingAnimation from "@/components/ui/LoadingAnimation";
 const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
   const [error, setError] = useState<boolean>(false);
   const [saveDisabled, setSaveDisabled] = useState<boolean>(false);
@@ -29,6 +30,7 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
     saveBlog,
     setEditedMarkdown,
     setTitleEditValue,
+    titleEditValue,
   } = useBlogEdit(params.id);
 
   const {
@@ -44,12 +46,14 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
   );
   return (
     <>
-      {loading === true ? (
-        <div>Loading</div>
-      ) : blog ? (
+      {loading === true ||
+      isNotFound === null ||
+      (blog === null && isNotFound === false) ? (
+        <LoadingAnimation />
+      ) : !isNotFound && blog ? (
         <div className="w-full sm:max-w-5xl h-auto mx-auto  bg-white  flex flex-col gap-y-5 sm:px-10  sm:py-10 px-2 py-2 mb-10">
           <EditTitle
-            title={blog.title}
+            title={titleEditValue ? titleEditValue : blog.title}
             setTitle={(value: string) => setTitleEditValue(value)}
           />
           <SelectedTags
@@ -68,35 +72,33 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
             setTags={insertTagInUserSeletedTags}
           />
 
-          {blog && (
-            <>
-              <MarkdownEditor
-                images={blogImages}
-                setBlogImage={(image: File) => setBlogImageToUpload(image)}
-                uploadBlogImage={uploadBlogImage}
-                setMarkdownValue={(value: string) => setEditedMarkdown(value)}
-                markdownValue={blog.markdownString}
-              />
+          <>
+            <MarkdownEditor
+              images={blogImages}
+              setBlogImage={(image: File) => setBlogImageToUpload(image)}
+              uploadBlogImage={uploadBlogImage}
+              setMarkdownValue={(value: string) => setEditedMarkdown(value)}
+              markdownValue={blog.markdownString}
+            />
 
-              <div className="flex gap-x-5">
-                <Button
-                  disabled={saveDisabled}
-                  onClick={async () => {
-                    setSaveDisabled(true);
-                    await saveBlog({ tags: userSelectedTags });
-                    setSaveDisabled(false);
-                  }}
-                  className="w-40"
-                >
-                  {saveDisabled ? (
-                    <Loader message="Please wait"></Loader>
-                  ) : (
-                    "Save"
-                  )}
-                </Button>
-              </div>
-            </>
-          )}
+            <div className="flex gap-x-5">
+              <Button
+                disabled={saveDisabled}
+                onClick={async () => {
+                  setSaveDisabled(true);
+                  await saveBlog({ tags: userSelectedTags });
+                  setSaveDisabled(false);
+                }}
+                className="w-40"
+              >
+                {saveDisabled ? (
+                  <Loader message="Please wait"></Loader>
+                ) : (
+                  "Save"
+                )}
+              </Button>
+            </div>
+          </>
 
           {blogImageToUpload && (
             <UploadImagePreview
@@ -108,7 +110,7 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
           )}
         </div>
       ) : (
-        <div>Not Found</div>
+        notFound()
       )}
     </>
   );
