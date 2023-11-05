@@ -13,8 +13,6 @@ const useBlogEdit = (blogId: string) => {
   const [triggerRerender, setTriggerRerender] = useState<boolean>(false);
   const { toast } = useToast();
 
-
-  
   const saveBlog = async ({ tags }: { tags: string[] }) => {
     try {
       //   setSaveDisabled(true);

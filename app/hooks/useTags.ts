@@ -40,12 +40,10 @@ const useTags = () => {
     searchInputTag,
     queryResponseTags,
     userSelectedTags,
-    blogTags,
     queryTagsFromServer,
     insertTagInUserSeletedTags,
     deleteTagInUserSeletedTag,
     setSearchInputTag,
-    setBlogTags,
   };
 };
 export default useTags;

@@ -15,7 +15,7 @@ import useTags from "@/app/hooks/useTags";
 import useBlogEdit from "@/app/hooks/useBlogEdit";
 import useBlog from "@/app/hooks/useBlog";
 import { notFound } from "next/navigation";
-
+import EditTitle from "@/components/EditTitle";
 const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
   const [error, setError] = useState<boolean>(false);
   const [saveDisabled, setSaveDisabled] = useState<boolean>(false);
@@ -39,33 +39,19 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
     insertTagInUserSeletedTags,
     deleteTagInUserSeletedTag,
   } = useTags();
-  const { blog, blogImages, blogTags, loading } = useBlog(params.id);
-
-  const publishBlog = async () => {
-    // setPublishedDisabled(true);
-    // await updateBlog({ published: true }, params.id,[]);
-    // toast({
-    //   title: "Published",
-    //   description: "Your Blog has been published successfully",
-    // });
-    // setTriggerBlogUpadate((pre) => !pre);
-    // setPublishedDisabled(false);
-  };
-  const unpublishBlog = async () => {
-    // setPublishedDisabled(true);
-    // await updateBlog({ published: false }, params.id);
-    // toast({
-    //   title: "Published",
-    //   description: "Your Blog has been unpublished successfully",
-    // });
-    // setTriggerBlogUpadate((pre) => !pre);
-    // setPublishedDisabled(false);
-  };
-
+  const { blog, blogImages, blogTags, loading, isNotFound } = useBlog(
+    params.id
+  );
   return (
     <>
-      {loading && blog ? (
+      {loading === true ? (
+        <div>Loading</div>
+      ) : blog ? (
         <div className="w-full sm:max-w-5xl h-auto mx-auto  bg-white  flex flex-col gap-y-5 sm:px-10  sm:py-10 px-2 py-2 mb-10">
+          <EditTitle
+            title={blog.title}
+            setTitle={(value: string) => setTitleEditValue(value)}
+          />
           <SelectedTags
             tags={[...blogTags, ...userSelectedTags]}
             deleteTag={deleteTagInUserSeletedTag}
@@ -121,7 +107,9 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
             ></UploadImagePreview>
           )}
         </div>
-      ):notFound()}
+      ) : (
+        <div>Not Found</div>
+      )}
     </>
   );
 };

@@ -38,15 +38,19 @@ const SignInForm: React.FC<SignInFormProps> = ({}) => {
   });
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setSignInError(null);
-    signIn("credentials", {
+   const response = await signIn("credentials", {
       callbackUrl: callbackUrl,
       email: values.email,
       password: values.password,
-    }).catch((error: Error) => {
-      console.log(error);
-      setSignInError(error.message || "something went wrong try again");
+      redirect:false
+      
     });
-  }
+    if(response?.error){
+      setSignInError(response.error)
+    }
+    console.log(response);
+  
+}
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
