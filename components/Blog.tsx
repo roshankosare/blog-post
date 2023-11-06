@@ -4,6 +4,7 @@ import Image from "next/image";
 import getDateTimeFormat from "@/lib/getDateTimeFormat";
 import Avatar from "./Avatar";
 import { Badge } from "./ui/badge";
+import { Skeleton } from "./ui/skeleton";
 
 export interface BlogProps {
   blog: Partial<
@@ -33,7 +34,7 @@ const BlogCard: React.FC<BlogProps> = ({ blog }) => {
             {getDateTimeFormat(blog.createdAt?.toString() || "")}
           </p>
         </div>
-        <p className="   font-bold text-md sm:text-xl gray-900 line-clamp-2">
+        <p className=" font-extrabold text-md sm:text-xl gray-900 line-clamp-2 capitalize">
           {blog.title}
         </p>
         <div className="flex gap-x-5">
@@ -42,7 +43,11 @@ const BlogCard: React.FC<BlogProps> = ({ blog }) => {
           </p>
 
           {blog.tags?.slice(0, 1).map((tag) => (
-            <Badge key={tag.name} variant={"outline"} className="text-xs">
+            <Badge
+              key={tag.name}
+              variant={"outline"}
+              className="text-xs text-gray-500"
+            >
               {tag.name}
             </Badge>
           ))}
@@ -61,4 +66,20 @@ const BlogCard: React.FC<BlogProps> = ({ blog }) => {
   );
 };
 
+export const BlogSkeleton = () => {
+  return (
+    <Card className=" w-full   flex flex-row sm:h-[150px] h-[140px] border-none rounded-none sm:px-5 px-2">
+      <div className="flex flex-col h-full w-full gap-y-4 px-2 py-2 ">
+        <div className="flex flex-row gap-x-2">
+          <Skeleton className="w-8 h-8 rounded-full" />
+          <Skeleton className=" h-6 w-40 " />
+        </div>
+        <Skeleton className="w-full h-8"></Skeleton>
+      </div>
+      <Skeleton className="w-[120px] sm:w-[250px] sm:h-full h-[75px] my-auto sm:py-2 py-2" />
+    </Card>
+  );
+};
+
 export default BlogCard;
+

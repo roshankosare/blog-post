@@ -5,19 +5,30 @@ import { authOptionts } from "../auth/[...nextauth]/route";
 import { NextRequest, NextResponse } from "next/server";
 
 import { utapi } from "@/lib/uploadthing";
-import { Blog } from "@prisma/client";
-import Email from "next-auth/providers/email";
+import { Blog, Prisma } from "@prisma/client";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const autherId = searchParams.get("autherId");
-  const category = searchParams.getAll("tags");
-  const blogFilter: Partial<Pick<Blog, "autherId">> = {};
+  const tag = searchParams.get("tag");
+  const page = parseInt(searchParams.get("page") || "0");
+  const blogFilter: Partial<Pick<Prisma.BlogWhereInput, "autherId" | "tags">> =
+    {};
 
   autherId ? (blogFilter.autherId = autherId) : null;
-
+  if (tag) {
+    blogFilter.tags = {
+      some: {
+        name: {
+          in: [tag],
+        },
+      },
+    };
+  }
   try {
     const blogs = await prisma.blog.findMany({
+      take: 2,
+      skip: page ? (page - 1) * 2 : 0,
       where: blogFilter,
       include: {
         auther: {
@@ -27,9 +38,13 @@ export async function GET(req: Request) {
             avatar: true,
           },
         },
+        tags: {
+          select: {
+            name: true,
+          },
+        },
       },
     });
-   
 
     return NextResponse.json(blogs, { status: 200 });
   } catch (error) {
