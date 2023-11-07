@@ -16,12 +16,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-
-type AuthLink = {
-  href: string;
-  label: string;
-  // icon:ReactNode;
-};
+import Image from "next/image";
 
 const Header = ({}) => {
   const singOutHadler = async () => {
@@ -34,8 +29,18 @@ const Header = ({}) => {
     <div className="w-full inset-x-0 z-10 mb-5 top-0 px-2 py-3 sm:px-5 sticky sm:py-5 flex justify-between items-center bg-white border-b-[2px] border-black">
       {/* logo */}
       <div className="flex items-center justify-center">
-        <Link href="/" className=" text-3xl sm:text-4xl font-bold px-5">
-          Medium
+        <Link
+          href="/"
+          className=" text-3xl sm:text-4xl font-bold px-5 flex gap-x-1 items-center"
+        >
+          <Image
+            className=" w-10 h-10 sm:w-10 sm:h-10 rounded-full"
+            width={50}
+            height={50}
+            src={"/logo.png"}
+            alt=""
+          />
+          <p className=""> Blogify</p>
         </Link>
       </div>
       <div className="sm:flex flex-row gap-x-10 px-2">
@@ -81,7 +86,6 @@ const Header = ({}) => {
                     <DropdownMenuItem>
                       <Link href={"/blog/create"}>Write</Link>
                     </DropdownMenuItem>
-                    
 
                     <DropdownMenuSeparator />
                     <DropdownMenuItem

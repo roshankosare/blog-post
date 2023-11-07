@@ -30,7 +30,7 @@ const NewSuggetions: React.FC<NewSuggetionsProps> = ({ blogs }) => {
                 ></Avatar>
                 <p className="text-xs">{blog.auther?.username}</p>
               </div>
-              <p className="text-sm font-bold line-clamp-1">{blog.title}</p>
+              <p className="text-sm font-bold line-clamp-1 capitalize">{blog.title}</p>
               <div className="flex gap-x-2">
                 <p className="text-xs text-gray-600">
                   {blog.readTime + " min read"}

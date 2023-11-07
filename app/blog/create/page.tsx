@@ -16,9 +16,7 @@ interface NewBlogProps {}
 
 const NewBlog: React.FC<NewBlogProps> = ({}) => {
   const [title, setTitle] = useState<string>("");
-
   const [error, setError] = useState<string | null>(null);
-
   const [coverImage, setCoverImage] = useState<File | null>(null);
   const imageInputRef = useRef<HTMLInputElement | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
