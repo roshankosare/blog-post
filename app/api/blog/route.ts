@@ -27,8 +27,8 @@ export async function GET(req: Request) {
   }
   try {
     const blogs = await prisma.blog.findMany({
-      take: 2,
-      skip: page ? (page - 1) * 2 : 0,
+      take: 5,
+      skip: page ? (page - 1) * 5 : 0,
       where: blogFilter,
       include: {
         auther: {

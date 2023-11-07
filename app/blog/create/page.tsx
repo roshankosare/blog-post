@@ -6,11 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { postBlog } from "@/lib/posts";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
 import Loader from "@/components/Loader";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Card from "@/components/ui/Card";
 
 interface NewBlogProps {}

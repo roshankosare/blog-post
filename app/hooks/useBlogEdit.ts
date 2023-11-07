@@ -2,6 +2,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { updateBlog } from "@/lib/posts";
 import { Blog } from "@prisma/client";
 import axios from "axios";
+import { Tags } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const useBlogEdit = (blogId: string) => {
@@ -13,6 +14,16 @@ const useBlogEdit = (blogId: string) => {
   const [triggerRerender, setTriggerRerender] = useState<boolean>(false);
   const { toast } = useToast();
 
+  const publishBlog = async () => {
+    try {
+      await updateBlog({ publish: true }, blogId, []);
+      toast({
+        title: "published",
+        description: "Your Blog has been published successfully",
+      });
+      setTriggerRerender((pre) => !pre);
+    } catch (error) {}
+  };
   const saveBlog = async ({ tags }: { tags: string[] }) => {
     try {
       //   setSaveDisabled(true);
@@ -62,7 +73,9 @@ const useBlogEdit = (blogId: string) => {
     uploadBlogImage,
     setTitleEditValue,
     blogImageToUpload,
-    titleEditValue
+    titleEditValue,
+    publishBlog,
+    editedMarkdown
   };
 };
 

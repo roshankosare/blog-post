@@ -15,7 +15,7 @@ export default async function Home({
   if (tag) {
     blogsHomePage = await getBlogs({
       skip: 0,
-      take: 2,
+      take: 5,
       filterByWhere: {
         tags: {
           some: {
@@ -29,7 +29,7 @@ export default async function Home({
   } else {
     blogsHomePage = await getBlogs({
       skip: 0,
-      take: 2,
+      take: 5,
     });
   }
 

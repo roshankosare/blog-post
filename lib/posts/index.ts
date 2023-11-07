@@ -110,7 +110,7 @@ export const postBlog = async ({
 };
 
 export const updateBlog = async (
-  blogBody: { markdownString?: string; title?: string;  },
+  blogBody: { markdownString?: string; title?: string; publish?:boolean  },
   blogId: string,
   tags?: string[]
 ) => {

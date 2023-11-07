@@ -7,7 +7,6 @@ import html from "remark-html";
 import { calculateReadtime } from "@/lib/utils";
 import { Blog } from "@prisma/client";
 
-
 export async function GET(
   req: Request,
   { params }: { params: { id: string } }
@@ -23,13 +22,12 @@ export async function GET(
           url: true,
         },
       },
-      tags:{
-        select:{
-          name:true
-        }
-      }
+      tags: {
+        select: {
+          name: true,
+        },
+      },
     },
-
   });
 
   if (!blog) {
@@ -55,12 +53,17 @@ export async function PATCH(
     const markdown = body.markdownString;
     const title = body.title;
     const tags = body.tags || [];
+    const publish = body.publish;
+
     const updateBody: Partial<
       Pick<
         Blog,
-        "markdownString" | "markdownHTML" | "title" | "readTime" 
+        "markdownString" | "markdownHTML" | "title" | "readTime" | "published"
       >
     > = {};
+    if (publish) {
+      updateBody.published = true;
+    }
     const tagIds = await Promise.all(
       tags.map(async (tagName: string) => {
         const existingTag = await prisma.tag.findFirst({
@@ -88,9 +91,6 @@ export async function PATCH(
       updateBody.readTime = calculateReadtime(updateBody.markdownHTML);
     }
 
-   
-
-   
     if (title) updateBody.title = title;
 
     const blog = await prisma.blog.update({
@@ -104,7 +104,7 @@ export async function PATCH(
         },
       },
     });
-    
+
     if (!blog)
       return NextResponse.json({ error: "invalid blog id" }, { status: 400 });
 
