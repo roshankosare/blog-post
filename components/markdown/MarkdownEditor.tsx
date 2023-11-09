@@ -9,7 +9,7 @@ interface MarkdownProps {
   markdownValue: string;
   setMarkdownValue: (value: string) => void;
   setBlogImage: (image: File) => void;
-  onDeleteImage: (id: string) => void;
+  onDeleteImage: (id: string) => Promise<void>;
   images: string[];
 }
 const MarkdownEditor: React.FC<MarkdownProps> = ({
@@ -52,9 +52,7 @@ const MarkdownEditor: React.FC<MarkdownProps> = ({
         {preview ? <MarkdownPreview markdown={markdownValue} /> : null}
         {showUploadedImages ? (
           <UploadedImages
-            onImageDelete={(id: string) => {
-              onDeleteImage(id);
-            }}
+            onImageDelete={onDeleteImage}
             images={images}
           />
         ) : null}

@@ -82,9 +82,7 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
             markdownValue={
               editedMarkdown ? editedMarkdown : blog.markdownString
             }
-            onDeleteImage={(id: string) => {
-              deleteBlogImage(id);
-            }}
+            onDeleteImage={deleteBlogImage}
           />
           <UpdateBlogButtons
             publishDisabled={publishDisabled}
