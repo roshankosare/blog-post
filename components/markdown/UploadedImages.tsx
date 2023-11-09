@@ -6,10 +6,10 @@ import { nanoid } from "nanoid";
 
 interface UploadedImagesProps {
   images: string[];
-  onImageDelete: () => void;
+  onImageDelete: (id:string) => void;
 }
 
-const UploadedImages: React.FC<UploadedImagesProps> = ({ images }) => {
+const UploadedImages: React.FC<UploadedImagesProps> = ({ images ,onImageDelete}) => {
   const handleCopyClick = async () => {
     if (copyLinkRef) {
       try {
@@ -53,7 +53,7 @@ const UploadedImages: React.FC<UploadedImagesProps> = ({ images }) => {
                 >
                   Copy
                 </Button>
-                <Button variant={"destructive"} size={"sm"} onClick={() => {}}>
+                <Button variant={"destructive"} size={"sm"} onClick={() => {onImageDelete(image)}}>
                   Delete
                 </Button>
               </div>

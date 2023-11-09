@@ -44,7 +44,7 @@ export default async function Home({
   return (
     <main className=" w-full lg:max-w-6xl flex  sm:flex-row h-full gap-y-5 gap-x-10 mx-auto flex-col-reverse   ">
       <div className="sm:w-2/3 mx-auto h-screen">
-        <BlogContainer blogs={blogsHomePage} searchParams={searchParams} />
+        <BlogContainer blogs={blogsHomePage} tag={tag} />
       </div>
       <div className="flex-col w-full sm:w-1/3 px-2  gap-y-5 flex">
         <div>

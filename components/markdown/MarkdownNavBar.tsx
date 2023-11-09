@@ -21,9 +21,6 @@ import {
 } from "../ui/dropdown-menu";
 import { useRef, useState } from "react";
 import TooltipMarkdownTool from "./TooltipMarkdownTool";
-import { utapi } from "@/lib/uploadthing";
-import axios from "axios";
-import { UploadImagePreview } from "../UploadImagePreview";
 
 const md = {
   h1: "# Enter main heading here",
@@ -42,7 +39,6 @@ type MarkdownNavBarProps = {
   setPreview: () => void;
   setBlogImage: (iamge: File) => void;
   showImageUpload: () => void;
-  uploadBlogImage: () => Promise<string>;
   preview: boolean;
 };
 
@@ -52,14 +48,12 @@ const MarkdownNavBar: React.FC<MarkdownNavBarProps> = ({
   preview,
   showImageUpload,
   setBlogImage,
-  uploadBlogImage,
 }) => {
   const handleUploadImageButton = () => {
     fileInputRef.current?.click();
   };
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [showModel, setShowModel] = useState<boolean>(false);
 
   return (
     <div className="w-full h-auto sm:h-12 flex flex-col gap-y-2 sm:flex-row  px-2 sm:px-5 py-2 border border-gray-200 rounded-sm justify-between">
@@ -173,7 +167,7 @@ const MarkdownNavBar: React.FC<MarkdownNavBarProps> = ({
             const imageId = nanoid();
             const imageWithId = new File([image], `${imageId}.${imageType}`);
             setBlogImage(imageWithId);
-            setShowModel(true);
+
             // const url = await uploadBlogImage();
             // setMarkDownText(`![${imageWithId.name}?.name}](${url})`);
           }

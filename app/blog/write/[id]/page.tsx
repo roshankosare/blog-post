@@ -16,12 +16,12 @@ import useBlog from "@/app/hooks/useBlog";
 import { notFound } from "next/navigation";
 import EditTitle, { EditBlogTitleSkeleton } from "@/components/EditTitle";
 import UpdateBlogButtons from "@/components/UpdateBlogButtons";
-import { updateBlog } from "@/lib/posts";
 
 const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
   const [error, setError] = useState<boolean>(false);
   const [saveDisabled, setSaveDisabled] = useState<boolean>(false);
   const [publishDisabled, setPublishedDisabled] = useState<boolean>(false);
+  const { blog, loading, isNotFound ,fetchBlog} = useBlog(params.id);
 
   const {
     setBlogImageToUpload,
@@ -35,7 +35,8 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
     titleEditValue,
     publishBlog,
     editedMarkdown,
-  } = useBlogEdit(params.id);
+    deleteBlogImage,
+  } = useBlogEdit(params.id,fetchBlog);
 
   const {
     searchInputTag,
@@ -45,9 +46,9 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
     insertTagInUserSeletedTags,
     deleteTagInUserSeletedTag,
   } = useTags();
-  const { blog, blogImages, blogTags, loading, isNotFound } = useBlog(
-    params.id
-  );
+ 
+ 
+
   return (
     <>
       {loading === true ||
@@ -61,7 +62,7 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
             setTitle={(value: string) => setTitleEditValue(value)}
           />
           <SelectedTags
-            tags={[...blogTags, ...userSelectedTags]}
+            tags={[...blog.tags.map((tag) => tag.name), ...userSelectedTags]}
             deleteTag={deleteTagInUserSeletedTag}
           />
 
@@ -77,13 +78,15 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
           />
 
           <MarkdownEditor
-            images={blogImages}
+            images={blog.images.map((image) => image.url)}
             setBlogImage={(image: File) => setBlogImageToUpload(image)}
-            uploadBlogImage={uploadBlogImage}
             setMarkdownValue={(value: string) => setEditedMarkdown(value)}
             markdownValue={
               editedMarkdown ? editedMarkdown : blog.markdownString
             }
+            onDeleteImage={(id: string) => {
+              deleteBlogImage(id);
+            }}
           />
           <UpdateBlogButtons
             publishDisabled={publishDisabled}

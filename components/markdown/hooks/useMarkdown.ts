@@ -45,7 +45,7 @@ const useMarkdown = ({
   };
 
   const showUplaodedImagesTab = () => {
-    if (showUploadedImages) {
+    if (!showUploadedImages) {
       setPreview(false);
       setShowUploadedImages(true);
       setShowEditor(false);

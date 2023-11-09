@@ -63,6 +63,7 @@ model Tag {
 model BlogImages {
   id     String @id @default(uuid())
   url    String
+  key    String @unique
   blog   Blog   @relation(fields: [blogId], references: [id], onDelete: Cascade)
   blogId String
 }

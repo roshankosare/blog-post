@@ -10,7 +10,6 @@ export async function POST(
 ) {
   try {
     const session = await getServerSession(authOptionts);
-    console.log(session)
     if (!session?.user)
       return NextResponse.json({ error: "unauthorized" }, { status: 403 });
     const form = await req.formData();
@@ -28,20 +27,26 @@ export async function POST(
     if (blog.autherId !== session.user.id)
       return NextResponse.json({ error: "forbidden" }, { status: 403 });
 
-    const url = (await utapi.uploadFiles(image)).data?.url;
+    const imageUploadResponse = await utapi.uploadFiles(image);
+   
 
-    if (!url) {
+    if (!imageUploadResponse.data?.url) {
       throw new Error("internal server error");
     }
     await prisma.blogImages.create({
       data: {
-        url: url,
+        url: imageUploadResponse.data.url,
         blogId: blog.id,
+        key:imageUploadResponse.data.key
       },
     });
 
-    return NextResponse.json({ url: url }, { status: 200 });
+    return NextResponse.json(
+      { url: imageUploadResponse.data.url },
+      { status: 200 }
+    );
   } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { error: "internal server error" },
       { status: 500 }

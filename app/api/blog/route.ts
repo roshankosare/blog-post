@@ -78,11 +78,7 @@ export async function POST(req: Request) {
       coverImageUrl = (await utapi.uploadFiles(coverImage)).data?.url;
     }
 
-    // const processedMarkdown = await remark()
-    //   .use(html)
-    //   .process(markdownWithImageLinks);
-    // const parsedMarkdown = processedMarkdown.toString();
-
+   
     const blog = await prisma.blog.create({
       data: {
         autherId: session.user.id,

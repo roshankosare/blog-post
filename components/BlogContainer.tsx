@@ -10,16 +10,18 @@ import useFetchBlogs, { BlogWithAuther } from "@/app/hooks/useFetchBlogs";
 
 interface BlogContainerProps {
   blogs: BlogWithAuther[];
-  searchParams: { [key: string]: string | string[] | undefined };
+  autherId?: string;
+  tag?: string;
 }
 
 const BlogContainer: React.FC<BlogContainerProps> = ({
   blogs,
-  searchParams,
+  autherId,
+  tag,
 }) => {
-  const tag = searchParams["tag"] as string;
-
-  const { fetchBlogs, newblogs, loadingBlogs } = useFetchBlogs();
+  const { fetchBlogs, newblogs, loadingBlogs, loadMoreDisabled } =
+    useFetchBlogs();
+   
 
   return (
     <div className="w-full flex flex-col  max-h-full bg-transparent  overflow-y-scroll gap-y-2 no-scrollbar ">
@@ -31,20 +33,18 @@ const BlogContainer: React.FC<BlogContainerProps> = ({
         );
       })}
       {loadingBlogs && [0, 1].map((value) => <BlogSkeleton key={value} />)}
-      <Button
-        variant={"outline"}
-        size={"sm"}
-        className="w-40 px-3 py-4 mx-auto rounded-3xl"
-        onClick={() => {
-          if (tag) {
-            fetchBlogs(tag);
-            return;
-          }
-          fetchBlogs();
-        }}
-      >
-        Load more stories
-      </Button>
+      {(!loadMoreDisabled  &&  !(blogs.length < 5) )&& (
+        <Button
+          variant={"outline"}
+          size={"sm"}
+          className="w-40 px-3 py-4 mx-auto rounded-3xl"
+          onClick={() => {
+            fetchBlogs(tag, autherId);
+          }}
+        >
+          Load more stories
+        </Button>
+      )}
     </div>
   );
 };

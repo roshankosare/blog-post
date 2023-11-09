@@ -10,6 +10,7 @@ interface MarkdownProps {
   setMarkdownValue: (value: string) => void;
   setBlogImage: (image: File) => void;
   uploadBlogImage: () => Promise<string>;
+  onDeleteImage: (id: string) => void;
   images: string[];
 }
 const MarkdownEditor: React.FC<MarkdownProps> = ({
@@ -18,6 +19,7 @@ const MarkdownEditor: React.FC<MarkdownProps> = ({
   setBlogImage,
   uploadBlogImage,
   images,
+  onDeleteImage,
 }) => {
   const {
     preview,
@@ -34,7 +36,6 @@ const MarkdownEditor: React.FC<MarkdownProps> = ({
       <MarkdownNavBar
         setMarkDownText={(value: string) => setMarkdownTextSnippits(value)}
         setBlogImage={setBlogImage}
-        uploadBlogImage={uploadBlogImage}
         setPreview={() => showPreviewTab()}
         showImageUpload={() => showUplaodedImagesTab()}
         preview={preview}
@@ -52,7 +53,12 @@ const MarkdownEditor: React.FC<MarkdownProps> = ({
         ) : null}
         {preview ? <MarkdownPreview markdown={markdownValue} /> : null}
         {showUploadedImages ? (
-          <UploadedImages onImageDelete={() => {}} images={images} />
+          <UploadedImages
+            onImageDelete={(id: string) => {
+              onDeleteImage(id);
+            }}
+            images={images}
+          />
         ) : null}
       </div>
     </Card>
