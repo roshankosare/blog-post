@@ -21,7 +21,7 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
   const [error, setError] = useState<boolean>(false);
   const [saveDisabled, setSaveDisabled] = useState<boolean>(false);
   const [publishDisabled, setPublishedDisabled] = useState<boolean>(false);
-  const { blog, loading, isNotFound ,fetchBlog} = useBlog(params.id);
+  const { blog, loading, isNotFound, fetchBlog } = useBlog(params.id);
 
   const {
     setBlogImageToUpload,
@@ -36,7 +36,7 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
     publishBlog,
     editedMarkdown,
     deleteBlogImage,
-  } = useBlogEdit(params.id,fetchBlog);
+  } = useBlogEdit(params.id, fetchBlog);
 
   const {
     searchInputTag,
@@ -46,8 +46,6 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
     insertTagInUserSeletedTags,
     deleteTagInUserSeletedTag,
   } = useTags();
- 
- 
 
   return (
     <>

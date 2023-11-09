@@ -5,14 +5,12 @@ import axios from "axios";
 
 import { useEffect, useState } from "react";
 
-
-const useBlogEdit = (blogId: string,fetchBlog:()=>void) => {
+const useBlogEdit = (blogId: string, fetchBlog: () => void) => {
   const [titleEditValue, setTitleEditValue] = useState<string | null>(null);
   const [editedMarkdown, setEditedMarkdown] = useState<string | null>(null);
   const [blogImageToUpload, setBlogImageToUpload] = useState<File | null>(null);
   const [showUploadPreviewModel, setShowUploadPreviewModel] =
     useState<boolean>(false);
- 
 
   const { toast } = useToast();
 
@@ -75,7 +73,7 @@ const useBlogEdit = (blogId: string,fetchBlog:()=>void) => {
       const resposne = await axios.delete(
         `/api/blog/${blogId}/image/${imageId}`
       );
-   
+
       fetchBlog();
     } catch (error) {
       console.log(error);

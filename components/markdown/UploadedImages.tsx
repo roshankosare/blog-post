@@ -1,12 +1,12 @@
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { nanoid } from "nanoid";
 
 interface UploadedImagesProps {
   images: string[];
-  onImageDelete: (id:string) => void;
+  onImageDelete: (id:string) => Promise<void>;
 }
 
 const UploadedImages: React.FC<UploadedImagesProps> = ({ images ,onImageDelete}) => {
@@ -23,6 +23,7 @@ const UploadedImages: React.FC<UploadedImagesProps> = ({ images ,onImageDelete})
     }
   };
   const copyLinkRef = useRef<HTMLInputElement | null>(null);
+  const [deleteButtonDisabled,setDeleteButtonDisabled] = useState(false);
   return (
     <div className="  w-full h-full px-2 py-5  overflow-y-scroll no-scrollbar">
       {images.length === 0 ? (
@@ -53,7 +54,11 @@ const UploadedImages: React.FC<UploadedImagesProps> = ({ images ,onImageDelete})
                 >
                   Copy
                 </Button>
-                <Button variant={"destructive"} size={"sm"} onClick={() => {onImageDelete(image)}}>
+                <Button disabled = {deleteButtonDisabled} variant={"destructive"} size={"sm"} onClick={async () => {
+                  setDeleteButtonDisabled(true);
+                  await onImageDelete(image);
+                  setDeleteButtonDisabled(true);
+                  }}>
                   Delete
                 </Button>
               </div>

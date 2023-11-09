@@ -10,13 +10,14 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 
-import { FC } from "react";
+import { FC, useState } from "react";
 import Image from "next/image";
+import Loader from "./Loader";
 interface UploadImagePreviewProps {
   url: string;
   open: boolean;
   onClose: () => void;
-  onImageUpload: () => void;
+  onImageUpload: () => Promise<void>;
 }
 
 export const UploadImagePreview: FC<UploadImagePreviewProps> = ({
@@ -25,6 +26,7 @@ export const UploadImagePreview: FC<UploadImagePreviewProps> = ({
   onClose,
   onImageUpload,
 }) => {
+  const [uploadButtonDisable, setUploadButtondisable] = useState(false);
   return (
     <Dialog open={open}>
       <DialogContent className="sm:max-w-[500px]">
@@ -42,9 +44,26 @@ export const UploadImagePreview: FC<UploadImagePreviewProps> = ({
           ></Image>
         </div>
         <DialogFooter className="gap-x-5 gap-y-5 ">
-          <Button onClick={() => onImageUpload()}>Uplaod</Button>
+          <Button
+            disabled={uploadButtonDisable}
+            onClick={async () => {
+              setUploadButtondisable(true);
+              await onImageUpload();
+              setUploadButtondisable(false);
+            }}
+          >
+            {uploadButtonDisable ? (
+              <Loader message="Please wait"></Loader>
+            ) : (
+              "Upload"
+            )}
+          </Button>
           <DialogClose asChild>
-            <Button variant={"outline"} onClick={() => onClose()}>
+            <Button
+              disabled={uploadButtonDisable}
+              variant={"outline"}
+              onClick={() => onClose()}
+            >
               Close
             </Button>
           </DialogClose>

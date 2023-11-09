@@ -9,7 +9,6 @@ interface MarkdownProps {
   markdownValue: string;
   setMarkdownValue: (value: string) => void;
   setBlogImage: (image: File) => void;
-  uploadBlogImage: () => Promise<string>;
   onDeleteImage: (id: string) => void;
   images: string[];
 }
@@ -17,7 +16,6 @@ const MarkdownEditor: React.FC<MarkdownProps> = ({
   markdownValue,
   setMarkdownValue,
   setBlogImage,
-  uploadBlogImage,
   images,
   onDeleteImage,
 }) => {
