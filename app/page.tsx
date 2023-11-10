@@ -41,7 +41,7 @@ export default async function Home({
       createdAt: "desc",
     },
   });
-  console.log(blogsHomePage)
+ 
 
   return (
     <main className=" w-full lg:max-w-6xl flex  sm:flex-row h-full gap-y-5 gap-x-10 mx-auto flex-col-reverse   ">

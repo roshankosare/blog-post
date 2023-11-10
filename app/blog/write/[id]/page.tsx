@@ -69,7 +69,10 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
 
           <SearchTag
             tag={searchInputTag}
-            setTags={() => insertTagInUserSeletedTags(searchInputTag)}
+            setTags={() => {
+              insertTagInUserSeletedTags(searchInputTag);
+              setSearchInputTag("");
+            }}
             onChangeTag={(tag: string) => setSearchInputTag(tag)}
           />
 

@@ -11,7 +11,7 @@ interface SelectedTagsProps {
 const SelectedTags: React.FC<SelectedTagsProps> = ({ tags, deleteTag }) => {
   return (
     <div className="flex  flex-col gap-x-2">
-      <Label>Tags</Label>
+      <Label>Add Tags</Label>
       <div className="px-1 py-2 flex flex-row flex-wrap gap-x-2 gap-y-2">
         {tags.map((tag) => (
           <div key={tag} className="flex rounded-full">

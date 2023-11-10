@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 const useTags = () => {
   const [searchInputTag, setSearchInputTag] = useState<string>("");
   const [queryResponseTags, setQueryReponseTags] = useState<string[]>([]);
-  const [userSelectedTags, setUserSelectedTags] = useState<string[]>([]);
-  const [blogTags, setBlogTags] = useState<string[] >([]);
+ 
+
 
   useEffect(() => {
     if (searchInputTag.length > 3) queryTagsFromServer(searchInputTag);
@@ -26,23 +26,14 @@ const useTags = () => {
       .then((res) => setQueryReponseTags(res.data.map((tag: Tag) => tag.name)));
   };
 
-  const insertTagInUserSeletedTags = (tag: string) => {
-    if (tag && !userSelectedTags.includes(tag)) {
-      setUserSelectedTags((prevTags) => [...prevTags, tag]);
-    }
-  };
-
-  const deleteTagInUserSeletedTag = (tag: string) => {
-    setUserSelectedTags((pre) => pre.filter((item) => item !== tag));
-  };
+ 
 
   return {
     searchInputTag,
     queryResponseTags,
-    userSelectedTags,
+   
     queryTagsFromServer,
-    insertTagInUserSeletedTags,
-    deleteTagInUserSeletedTag,
+    
     setSearchInputTag,
   };
 };

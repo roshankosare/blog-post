@@ -67,7 +67,7 @@ const signIn = async ({
     });
     if (!user) throw new Error("email or password is incorrect");
 
-    if (!compare(password, user.password)) {
+    if (!await compare(password, user.password)) {
       throw new Error("email or password is incorrect");
     }
 

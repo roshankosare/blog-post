@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils";
 
 import { useState } from "react";
 import ErrorBox from "./ErrorBox";
-import { useRouter, useSearchParams } from "next/navigation";
+import { redirect, useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { Icons } from "./icons";
 
@@ -25,6 +25,7 @@ interface SignInFormProps {}
 
 const SignInForm: React.FC<SignInFormProps> = ({}) => {
   const [signInError, setSignInError] = useState<string | null>(null);
+  const router = useRouter();
 
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackURL") || "/";
@@ -43,9 +44,13 @@ const SignInForm: React.FC<SignInFormProps> = ({}) => {
       password: values.password,
       redirect: false,
     });
+
     if (response?.error) {
       setSignInError(response.error);
+      return;
     }
+
+    router.push("/");
   }
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

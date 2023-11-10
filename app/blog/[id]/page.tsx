@@ -1,10 +1,11 @@
 import Avatar from "@/components/Avatar";
+import BlogTags from "@/components/BlogTags";
 import Card from "@/components/ui/Card";
 import getDateTimeFormat from "@/lib/getDateTimeFormat";
 import { getBlog } from "@/lib/posts";
-import { Blog } from "@prisma/client";
+
 import { Metadata, ResolvingMetadata } from "next";
-import { getSession } from "next-auth/react";
+
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -50,7 +51,12 @@ const BlogInfo: React.FC<{ params: { id: string } }> = async ({ params }) => {
           width={50}
           hight={50}
         />
-       <Link href={`/profile/${blog.autherId}`}> <p className="text-lg text-gray-900 my-auto ">{blog.auther.username}</p></Link>
+        <Link href={`/profile/${blog.autherId}`}>
+          {" "}
+          <p className="text-lg text-gray-900 my-auto ">
+            {blog.auther.username}
+          </p>
+        </Link>
       </div>
       <div className=" w-full text-4xl font-bold">{blog.title}</div>
       <p className="text-md text-gray-600">
@@ -68,6 +74,7 @@ const BlogInfo: React.FC<{ params: { id: string } }> = async ({ params }) => {
         className=" prose w-full h-auto "
         dangerouslySetInnerHTML={{ __html: blog.markdownHTML || "" }}
       ></div>
+      <BlogTags link={true} tags={[...blog.tags.map((tag) => tag.name)]} />
     </Card>
   );
 };
