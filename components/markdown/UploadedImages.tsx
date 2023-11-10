@@ -57,7 +57,7 @@ const UploadedImages: React.FC<UploadedImagesProps> = ({ images ,onImageDelete})
                 <Button disabled = {deleteButtonDisabled} variant={"destructive"} size={"sm"} onClick={async () => {
                   setDeleteButtonDisabled(true);
                   await onImageDelete(image);
-                  setDeleteButtonDisabled(true);
+                  setDeleteButtonDisabled(false);
                   }}>
                   Delete
                 </Button>

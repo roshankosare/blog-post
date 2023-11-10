@@ -19,10 +19,9 @@ import { useState } from "react";
 import ErrorBox from "./ErrorBox";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { Icons } from "./icons";
 
-interface SignInFormProps {
-  
-}
+interface SignInFormProps {}
 
 const SignInForm: React.FC<SignInFormProps> = ({}) => {
   const [signInError, setSignInError] = useState<string | null>(null);
@@ -38,19 +37,16 @@ const SignInForm: React.FC<SignInFormProps> = ({}) => {
   });
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setSignInError(null);
-   const response = await signIn("credentials", {
+    const response = await signIn("credentials", {
       callbackUrl: callbackUrl,
       email: values.email,
       password: values.password,
-      redirect:false
-      
+      redirect: false,
     });
-    if(response?.error){
-      setSignInError(response.error)
+    if (response?.error) {
+      setSignInError(response.error);
     }
-    console.log(response);
-  
-}
+  }
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -107,13 +103,13 @@ const SignInForm: React.FC<SignInFormProps> = ({}) => {
       </div>
       <Button
         variant={"outline"}
-        className="w-full"
+        className="w-full flex gap-x-2"
         type="submit"
         onClick={async () => {
           await signIn("google", { callbackUrl: callbackUrl });
         }}
       >
-        Sign In with Google
+        Sign In with Google {Icons.googleIcon()}
       </Button>
     </div>
   );

@@ -1,11 +1,9 @@
 "use client";
 
-import { Blog } from "@prisma/client";
 import BlogCard, { BlogSkeleton } from "./Blog";
 import Link from "next/link";
-import { useState } from "react";
 import { Button } from "./ui/button";
-import axios from "axios";
+
 import useFetchBlogs, { BlogWithAuther } from "@/app/hooks/useFetchBlogs";
 
 interface BlogContainerProps {
@@ -21,7 +19,6 @@ const BlogContainer: React.FC<BlogContainerProps> = ({
 }) => {
   const { fetchBlogs, newblogs, loadingBlogs, loadMoreDisabled } =
     useFetchBlogs();
-   
 
   return (
     <div className="w-full flex flex-col  max-h-full bg-transparent  overflow-y-scroll gap-y-2 no-scrollbar ">
@@ -33,7 +30,7 @@ const BlogContainer: React.FC<BlogContainerProps> = ({
         );
       })}
       {loadingBlogs && [0, 1].map((value) => <BlogSkeleton key={value} />)}
-      {(!loadMoreDisabled  &&  !(blogs.length < 5) )&& (
+      {!loadMoreDisabled && !(blogs.length < 5) && (
         <Button
           variant={"outline"}
           size={"sm"}

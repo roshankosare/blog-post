@@ -51,10 +51,7 @@ const MarkdownEditor: React.FC<MarkdownProps> = ({
         ) : null}
         {preview ? <MarkdownPreview markdown={markdownValue} /> : null}
         {showUploadedImages ? (
-          <UploadedImages
-            onImageDelete={onDeleteImage}
-            images={images}
-          />
+          <UploadedImages onImageDelete={onDeleteImage} images={images} />
         ) : null}
       </div>
     </Card>

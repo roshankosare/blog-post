@@ -26,6 +26,7 @@ export default async function Home({
         },
       },
     });
+    
   } else {
     blogsHomePage = await getBlogs({
       skip: 0,

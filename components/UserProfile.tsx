@@ -31,18 +31,18 @@ const UserProfile: React.FC<UserProfileProps> = ({ profile }) => {
   );
 };
 
-export const UserProfileSkeleton = ()=>{
-    return(
-        <Card className="w-full flex flex-row sm:h-48 h-32  border-none sm:gap-x-5 gap-x-2 ">
-            <div className="sm:w-32 sm:h-32 w-16 h-16 px-1 py-1">
-                <Skeleton   className="w-full h-full rounded-full"/>
-            </div>
-            <div className="flex flex-col  gap-y-2 w-3/4   px-2 sm:px-5 py-1 sm:py-2">
-                <Skeleton className="w-40 h-6  sm:h-10"/>
-                <Skeleton className="w-40 h-6 sm:h-10"/>
-                </div>
-            </Card>
-    )
-}
+export const UserProfileSkeleton = () => {
+  return (
+    <Card className="w-full flex flex-row sm:h-48 h-32  border-none sm:gap-x-5 gap-x-2 ">
+      <div className="sm:w-32 sm:h-32 w-16 h-16 px-1 py-1">
+        <Skeleton className="w-full h-full rounded-full" />
+      </div>
+      <div className="flex flex-col  gap-y-2 w-3/4   px-2 sm:px-5 py-1 sm:py-2">
+        <Skeleton className="w-40 h-6  sm:h-8" />
+        <Skeleton className="w-40 h-6 sm:h-8" />
+      </div>
+    </Card>
+  );
+};
 
-export default UserProfile
+export default UserProfile;
