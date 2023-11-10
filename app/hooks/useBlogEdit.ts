@@ -9,10 +9,21 @@ const useBlogEdit = (blogId: string, fetchBlog: () => void) => {
   const [titleEditValue, setTitleEditValue] = useState<string | null>(null);
   const [editedMarkdown, setEditedMarkdown] = useState<string | null>(null);
   const [blogImageToUpload, setBlogImageToUpload] = useState<File | null>(null);
+  const [userSelectedTags, setUserSelectedTags] = useState<string[]>([]);
   const [showUploadPreviewModel, setShowUploadPreviewModel] =
     useState<boolean>(false);
 
   const { toast } = useToast();
+
+  const insertTagInUserSeletedTags = (tag: string) => {
+    if (tag && !userSelectedTags.includes(tag)) {
+      setUserSelectedTags((prevTags) => [...prevTags, tag]);
+    }
+  };
+
+  const deleteTagInUserSeletedTag = (tag: string) => {
+    setUserSelectedTags((pre) => pre.filter((item) => item !== tag));
+  };
 
   const publishBlog = async () => {
     try {
@@ -35,10 +46,15 @@ const useBlogEdit = (blogId: string, fetchBlog: () => void) => {
         blogId,
         tags
       );
+      setUserSelectedTags([]);
+      setTitleEditValue(null);
+      setEditedMarkdown(null);
+
       toast({
         title: "Saved",
         description: "Your Blog has been updated successfully",
       });
+
       fetchBlog();
       //   setSaveDisabled(false);
     } catch (error) {
@@ -56,6 +72,7 @@ const useBlogEdit = (blogId: string, fetchBlog: () => void) => {
       form.append("image", blogImageToUpload);
       const resposne = await axios.post(`/api/blog/${blogId}/image`, form);
       setShowUploadPreviewModel(false);
+      setBlogImageToUpload(null);
       fetchBlog();
       return resposne.data.url;
     } catch (error) {
@@ -93,6 +110,9 @@ const useBlogEdit = (blogId: string, fetchBlog: () => void) => {
     publishBlog,
     editedMarkdown,
     deleteBlogImage,
+    userSelectedTags,
+    insertTagInUserSeletedTags,
+    deleteTagInUserSeletedTag,
   };
 };
 

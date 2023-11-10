@@ -16,6 +16,7 @@ import useBlog from "@/app/hooks/useBlog";
 import { notFound } from "next/navigation";
 import EditTitle, { EditBlogTitleSkeleton } from "@/components/EditTitle";
 import UpdateBlogButtons from "@/components/UpdateBlogButtons";
+import BlogTags from "@/components/BlogTags";
 
 const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
   const [error, setError] = useState<boolean>(false);
@@ -36,15 +37,16 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
     publishBlog,
     editedMarkdown,
     deleteBlogImage,
+    userSelectedTags,
+    insertTagInUserSeletedTags,
+    deleteTagInUserSeletedTag,
   } = useBlogEdit(params.id, fetchBlog);
 
   const {
     searchInputTag,
     queryResponseTags,
-    userSelectedTags,
+
     setSearchInputTag,
-    insertTagInUserSeletedTags,
-    deleteTagInUserSeletedTag,
   } = useTags();
 
   return (
@@ -59,8 +61,9 @@ const WriteBlog: React.FC<{ params: { id: string } }> = ({ params }) => {
             title={titleEditValue ? titleEditValue : blog.title}
             setTitle={(value: string) => setTitleEditValue(value)}
           />
+          <BlogTags tags={[...blog.tags.map((tag) => tag.name)]} />
           <SelectedTags
-            tags={[...blog.tags.map((tag) => tag.name), ...userSelectedTags]}
+            tags={userSelectedTags}
             deleteTag={deleteTagInUserSeletedTag}
           />
 
